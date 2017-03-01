@@ -1,0 +1,44 @@
+{
+  "name": "@draftable/compare-api",
+  "version": "1.0.1",
+  "description": "Client library for Draftable's document comparison API.",
+  "author": "Draftable <hello@draftable.com>",
+  "contributors": [
+    "James Payor <james@draftable.com>"
+  ],
+  "keywords": [
+    "draftable",
+    "compare",
+    "comparison",
+    "document",
+    "documents",
+    "pdf",
+    "word",
+    "powerpoint",
+    "api"
+  ],
+  "license": "ISC",
+  "repository" : "draftable/compare-api-node-client",
+  "bugs": {
+    "url": "https://github.com/draftable/compare-api-node-client/issues",
+    "email": "support@draftable.com"
+  },
+  "main": "dist/index.js",
+  "devDependencies": {
+    "babel": "^6.5.2",
+    "babel-cli": "^6.22.2",
+    "babel-plugin-transform-class-properties": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.22.0",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-flow": "^1.0.0",
+    "flow-bin": "^0.39.0"
+  },
+  "dependencies": {
+    "needle": "^1.4.5"
+  },
+  "scripts": {
+    "build": "babel src --presets es2015,flow --plugins transform-class-properties,transform-object-rest-spread --out-dir dist",
+    "prepublish": "npm run build",
+    "test": "node test.js"
+  }
+}
