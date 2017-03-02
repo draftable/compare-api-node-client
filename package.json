@@ -1,6 +1,6 @@
 {
   "name": "@draftable/compare-api",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Client library for Draftable's document comparison API.",
   "author": "Draftable <hello@draftable.com>",
   "contributors": [

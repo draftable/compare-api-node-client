@@ -22,17 +22,17 @@ See the [full API documentation](https://api.draftable.com) for an introduction 
     ```
     comparisons.create({
         left: {
-            source: 'https://domain.com/left.pdf',
+            source: 'https://api.draftable.com/static/test-documents/code-of-conduct/left.pdf',
             fileType: 'pdf',
         },
         right: {
-            source: fs.readFileSync('path/to/right/file.docx'),
-            fileType: 'docx',
+            source: 'https://api.draftable.com/static/test-documents/code-of-conduct/right.rtf',
+            fileType: 'rtf',
         },
     }).then(function(comparison) {
        console.log("Comparison created:", comparison);
        console.log("Viewer URL (expires in 30 min):", comparisons.signedViewerURL(comparison.identifier));
-   });
+    });
     ```
 
 -----
@@ -144,6 +144,7 @@ It returns a `Promise` that resolves (with no return value) on success, and reje
  
 `options.left` and `options.right` should contain:
 - `source`: either a `buffer` giving the file data, or a `string` giving a full URL from which Draftable will download the file.
+    - For instance, `{source: fs.readFileSync('path/to/file')}` or `{source: 'https://example.com/path/to/file'}`.
 - `fileType`: the type of the file, specified by the file extension.
     - The following file types are supported:
         - PDF: `pdf`
