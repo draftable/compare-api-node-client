@@ -1,6 +1,6 @@
 # Draftable Compare API - Node.js Client Library
 
-This is a thin Javascript client for Draftable's [document comparison API](https://api.draftable.com/).
+This is a thin Javascript client for Draftable's [document comparison API](https://draftable.com/comparison-api).
 It wraps the available endpoints, and handles authentication and signing for you.
 The library is [available on npm](https://www.npmjs.com/package/@draftable/compare-api) as `@draftable/compare-api`.
 
