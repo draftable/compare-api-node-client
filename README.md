@@ -31,6 +31,8 @@ See the [full API documentation](https://api.draftable.com) for an introduction 
         },
     }).then(function(comparison) {
        console.log("Comparison created:", comparison);
+       # This generates a signed viewer URL that can be used to access the private comparison.
+       # By default, the URL will expire in 30 minutes. See the documentation for `signedViewerURL(...)`.
        console.log("Viewer URL (expires in 30 min):", comparisons.signedViewerURL(comparison.identifier));
     });
     ```
@@ -181,7 +183,8 @@ It returns a `Promise` that resolves (with no return value) on success, and reje
     }).then(function(comparison) {
         console.log("Created comparison:", comparison);
         
-        # This generates a signed viewer URL that can be used to access the private comparison for the next hour.
+        # This generates a signed viewer URL that can be used to access the private comparison for the next 30 minutes.
+        # At that time, both the URL and the comparison will expire. (Signed URLs default to expiring in 30 minutes.)
         console.log("Viewer URL (expires in 30 min):", comparisons.signedViewerURL(comparison.identifier));
     });
 
