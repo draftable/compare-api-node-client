@@ -59,16 +59,19 @@ export default class ComparisonsEndpoint {
                 throw new Error(`Invalid file type "${data.fileType.toLowerCase()}" given. Expected one of ("${Object.keys(allowedFileTypes).join('", "')}").`)
             }
             const sideData: Object = {};
-            sideData[`${side}.file_type`] = data.fileType;
-            if (data.displayName) sideData[`${side}.display_name`] = data.displayName;
+            sideData.file_type = data.fileType;
+            if (data.displayName) {
+                sideData.display_name = data.displayName;
+            }
             if (typeof data.source === 'string') {
-                sideData[`${side}.source_url`] = data.source;
+                sideData.source_url = data.source;
             } else {
-                sideData[`${side}.file`] = {content_type: 'application/octet-stream', filename: `${side}.${data.fileType}`, buffer: data.source};
+                sideData.file = {content_type: 'application/octet-stream', filename: `${side}.${data.fileType}`, buffer: data.source};
                 multipartRequired = true;
             }
             return sideData;
         }
+
         try {
             if (expires) {
                 if (typeof expires === 'string') {
@@ -81,8 +84,8 @@ export default class ComparisonsEndpoint {
             }
             const data = {
                 identifier,
-                ...getSideData('left', left),
-                ...getSideData('right', right),
+                left: getSideData('left', left),
+                right: getSideData('right', right),
                 public: publiclyAccessible,
                 expiry_time: expires,
             };
