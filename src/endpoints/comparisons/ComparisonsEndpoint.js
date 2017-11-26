@@ -50,7 +50,8 @@ export default class ComparisonsEndpoint {
         });
 
     create = ({left, right, identifier, publiclyAccessible, expires}: {left: Side, right: Side, identifier?: ?string, publiclyAccessible?: ?boolean, expires?: ?DateParameter}): Promise<Comparison> => {
-        let multipartRequired = false;
+        // We need to use a multipart request when either either file is specified using a buffer rather than a URL.
+        let multipartRequired = !(typeof left.source === 'string' && typeof right.source === 'string');
         function getSideData(side: string, data: Side) {
             if (data.fileType == null || typeof data.fileType !== "string") {
                 throw new Error('Invalid file type given - file type must be a string.')
@@ -59,17 +60,23 @@ export default class ComparisonsEndpoint {
                 throw new Error(`Invalid file type "${data.fileType.toLowerCase()}" given. Expected one of ("${Object.keys(allowedFileTypes).join('", "')}").`)
             }
             const sideData: Object = {};
-            sideData.file_type = data.fileType;
-            if (data.displayName) {
-                sideData.display_name = data.displayName;
-            }
-            if (typeof data.source === 'string') {
-                sideData.source_url = data.source;
+            if (multipartRequired) {
+                sideData[`${side}.file_type`] = data.fileType;
+                if (data.displayName) {
+                    sideData[`${side}.display_name`] = data.displayName;
+                }
+                sideData[`${side}.file`] = {content_type: 'application/octet-stream', filename: `${side}.${data.fileType}`, buffer: data.source};
+                return sideData;
             } else {
-                sideData.file = {content_type: 'application/octet-stream', filename: `${side}.${data.fileType}`, buffer: data.source};
-                multipartRequired = true;
+                sideData.file_type = data.fileType;
+                if (data.displayName) {
+                    sideData.display_name = data.displayName;
+                }
+                sideData.source_url = data.source;
+                var return_val = {};
+                return_val[side] = sideData;
+                return return_val;
             }
-            return sideData;
         }
 
         try {
@@ -84,10 +91,10 @@ export default class ComparisonsEndpoint {
             }
             const data = {
                 identifier,
-                left: getSideData('left', left),
-                right: getSideData('right', right),
+                ...getSideData('left', left),
+                ...getSideData('right', right),
                 public: publiclyAccessible,
-                expiry_time: expires,
+                expiry_time: expires
             };
             return this.__needleClient.post(comparisonsEndpointURL, data, multipartRequired).then((data: ?any) => {
                 if (!data) {
