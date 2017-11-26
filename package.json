@@ -18,27 +18,36 @@
     "api"
   ],
   "license": "ISC",
-  "repository" : "draftable/compare-api-node-client",
+  "repository": "draftable/compare-api-node-client",
   "bugs": {
     "url": "https://github.com/draftable/compare-api-node-client/issues",
     "email": "support@draftable.com"
   },
   "main": "dist/index.js",
   "devDependencies": {
-    "babel": "^6.5.2",
-    "babel-cli": "^6.22.2",
+    "babel-cli": "^6.26.0",
     "babel-plugin-transform-class-properties": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.22.0",
-    "babel-preset-es2015": "^6.22.0",
-    "babel-preset-flow": "^1.0.0",
-    "flow-bin": "^0.39.0"
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-flow": "^6.23.0",
+    "flow-bin": "^0.59.0"
   },
   "dependencies": {
-    "needle": "^1.4.5"
+    "needle": "^2.0.1"
   },
   "scripts": {
-    "build": "babel src --presets es2015,flow --plugins transform-class-properties,transform-object-rest-spread --out-dir dist",
+    "build": "babel src --out-dir dist",
     "prepublish": "npm run build",
     "test": "node test.js"
+  },
+  "babel": {
+    "presets": [
+      "env",
+      "flow"
+    ],
+    "plugins": [
+      "transform-class-properties",
+      "transform-object-rest-spread"
+    ]
   }
 }
