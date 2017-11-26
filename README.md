@@ -22,12 +22,12 @@ See the [full API documentation](https://api.draftable.com) for an introduction 
     ```
     comparisons.create({
         left: {
-            source: 'https://api.draftable.com/static/test-documents/code-of-conduct/left.pdf',
-            fileType: 'pdf',
+            source: 'https://api.draftable.com/static/test-documents/code-of-conduct/left.rtf',
+            fileType: 'rtf',
         },
         right: {
-            source: 'https://api.draftable.com/static/test-documents/code-of-conduct/right.rtf',
-            fileType: 'rtf',
+            source: 'https://api.draftable.com/static/test-documents/code-of-conduct/right.pdf',
+            fileType: 'pdf',
         },
     }).then(function(comparison) {
        console.log("Comparison created:", comparison);
