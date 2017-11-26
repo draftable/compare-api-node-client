@@ -47,7 +47,7 @@ See the [full API documentation](https://api.draftable.com) for an introduction 
   - Successful API calls that return data will resolve to `Comparison` objects with the parsed data.
   - Successful calls that return no data (e.g. a `DELETE` request) resolve to `null`.
   - Calls that fail for any reason will reject the Promise, with an `Error` object describing what went wrong.
-  
+
 - API requests should always succeed in production. Errors only occur upon network failures, invalid data, or invalid authentication.
 
 
@@ -59,7 +59,7 @@ Call it to create a `Client` for your API account.
 At present, `Client` has a single property, `comparisons`, that yields a `ComparisonsClient` that manages the comparisons for your API account.
 
 So, we'll assume you set things up as follows:
-    
+
     const comparisons = require('@draftable/compare-api').client(<yourAccountId>, <yourAuthToken>).comparisons;
 
 
@@ -72,7 +72,7 @@ So, we'll assume you set things up as follows:
 ###### Comparison objects
 
 `Comparison` objects have the following properties:
-- `identifier`: a `string` giving the identifier. 
+- `identifier`: a `string` giving the identifier.
 - `left`, `right`: objects giving information about each side, containing:
     - `fileType`: the file extension.
     - `sourceURL` _(optional)_: if the file was specified as a URL, this is a `string` giving that URL.
@@ -88,7 +88,7 @@ If a `Comparison` is `ready` (i.e. it has been processed and is ready for displa
 - `errorMessage` _(only present if `failed`)_: provides the developer with the reason the comparison failed.
 
 ###### Example usage
-    
+
     comparisons.get('<identifier>').then(function(comparison) {
         const privateOrPublic = comparison.publiclyAccessible ? "private" : "public";
         const readyOrNot = comparison.ready ? "ready" : "not ready yet";
@@ -107,19 +107,19 @@ If a `Comparison` is `ready` (i.e. it has been processed and is ready for displa
 
 `ComparisonsClient` provides `destroy(identifier: string)`, which attempts to delete the comparison with that identifier.
 
-It returns a `Promise` that resolves (with no return value) on success, and rejects with an error message if no comparison with that identifier exists. 
+It returns a `Promise` that resolves (with no return value) on success, and rejects with an error message if no comparison with that identifier exists.
 
 ###### Example usage
-    
+
     comparisons.getAll().then(function(comparisons) {
         console.log("Deleting oldest 10 comparisons.");
         const deleteStartIndex = Math.max(0, comparisons.length - 10);
-        
+
         for (let i = deleteStartIndex; i < comparisons.length; ++i) {
             const identifier = comparisons[i].identifier;
             comparisons.destroy(identifier).then(function() {
                 console.log("Comparison '" + identifier + "' deleted.");
-            });        
+            });
         }
     });
 
@@ -143,7 +143,7 @@ It returns a `Promise` that resolves (with no return value) on success, and reje
     - Can be specified as a `Date` object, or a `string` that `Date.parse` can understand.
     - If specified, the time must be in the future.
     - If unspecified, the comparison will never expire.
- 
+
 `options.left` and `options.right` should contain:
 - `source`: either a `buffer` giving the file data, or a `string` giving a full URL from which Draftable will download the file.
     - For instance, `{source: fs.readFileSync('path/to/file')}` or `{source: 'https://example.com/path/to/file'}`.
@@ -174,15 +174,15 @@ It returns a `Promise` that resolves (with no return value) on success, and reje
             fileType: 'docx',
             displayName: 'document (revised).docx',
         },
-        
+
         # 'publiclyAccessible' is omitted, because we only want to let authenticated users view the comparison.
-        
+
         # Comparison expires 30 minutes into the future. (Date.now() is in milliseconds since the UNIX epoch.)
         expires: new Date(Date.now() + 1000 * 60 * 30),
 
     }).then(function(comparison) {
         console.log("Created comparison:", comparison);
-        
+
         # This generates a signed viewer URL that can be used to access the private comparison for the next 30 minutes.
         # At that time, both the URL and the comparison will expire. (Signed URLs default to expiring in 30 minutes.)
         console.log("Viewer URL (expires in 30 min):", comparisons.signedViewerURL(comparison.identifier));
@@ -212,7 +212,7 @@ Viewer URLs are generated with the following methods:
 ```
 const identifier = comparisons.generateIdentifier()
 
-# Start uploading our request in the background. 
+# Start uploading our request in the background.
 comparisons.create({left: {...}, right: {...}});
 
 # Immediately give the user a view link to use, that displays a loading animation while we're creating the comparison.
@@ -235,7 +235,7 @@ console.log(viewerURL);
 All of the source code has Flow type annotations ([flowtype.org](https://flowtype.org/)).
 The published package has typing information in `dist/flow`.
 
-If you're using Flow, add the following to your `.flowconfig` to enable type checking: 
+If you're using Flow, add the following to your `.flowconfig` to enable type checking:
 
     [libs]
     <PROJECT_ROOT>/node_modules/@draftable/compare-api/dist/flow
@@ -244,7 +244,7 @@ If you're using Flow, add the following to your `.flowconfig` to enable type che
 
 ###### Streams support
 
-The lack of support for streams when uploading files is a known issue. This is a limitation that emerges from the lightweight request library we use, `needle`. 
+The lack of support for streams when uploading files is a known issue. This is a limitation that emerges from the lightweight request library we use, `needle`.
 
 If this causes you issues, consider adapting the code, or contact us at [support@draftable.com](mailto://support@draftable.com) as we may be able to help.
 
@@ -253,4 +253,4 @@ If this causes you issues, consider adapting the code, or contact us at [support
 We chose not to support browsers, as it's hazardous to be sharing your credentials with any users of your software.
 
 If you find yourself needing to use the API from in a browser context, contact us at [support@draftable.com](mailto://support@draftable.com) for pointers.
-You'll likely want to use more advanced authentication than just passing your auth token into requests made in the browser. 
+You'll likely want to use more advanced authentication than just passing your auth token into requests made in the browser.
