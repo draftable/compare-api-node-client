@@ -65,7 +65,11 @@ export default class ComparisonsEndpoint {
                 if (data.displayName) {
                     sideData[`${side}.display_name`] = data.displayName;
                 }
-                sideData[`${side}.file`] = {content_type: 'application/octet-stream', filename: `${side}.${data.fileType}`, buffer: data.source};
+                if (typeof data.source === 'string') {
+                    sideData[`${side}.source_url`] = data.source;
+                } else {
+                    sideData[`${side}.file`] = {content_type: 'application/octet-stream', filename: `${side}.${data.fileType}`, buffer: data.source};
+                }
                 return sideData;
             } else {
                 sideData.file_type = data.fileType;
