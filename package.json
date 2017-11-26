@@ -1,29 +1,38 @@
 {
   "name": "@draftable/compare-api",
   "version": "1.0.2",
-  "description": "Client library for Draftable's document comparison API.",
+  "description": "Client library for Draftable's document comparison API",
+  "license": "ISC",
+  "homepage": "https://draftable.com",
+  "repository": "draftable/compare-api-node-client",
+  "bugs": {
+    "url": "https://github.com/draftable/compare-api-node-client/issues",
+    "email": "support@draftable.com"
+  },
   "author": "Draftable <hello@draftable.com>",
   "contributors": [
+    "Ben Toner <ben@draftable.com>",
     "James Payor <james@draftable.com>"
   ],
   "keywords": [
     "draftable",
+    "api",
     "compare",
     "comparison",
     "document",
     "documents",
     "pdf",
     "word",
+    "doc",
+    "docx",
     "powerpoint",
-    "api"
+    "ppt",
+    "pptx"
   ],
-  "license": "ISC",
-  "repository": "draftable/compare-api-node-client",
-  "bugs": {
-    "url": "https://github.com/draftable/compare-api-node-client/issues",
-    "email": "support@draftable.com"
-  },
   "main": "dist/index.js",
+  "dependencies": {
+    "needle": "^2.0.1"
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-class-properties": "^6.22.0",
@@ -35,9 +44,6 @@
     "flow-bin": "^0.59.0",
     "mocha": "^4.0.1",
     "mocha-steps": "^1.1.0"
-  },
-  "dependencies": {
-    "needle": "^2.0.1"
   },
   "scripts": {
     "build": "babel src --out-dir dist",
