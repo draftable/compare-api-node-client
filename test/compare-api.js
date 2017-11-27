@@ -27,9 +27,9 @@ describe('Compare Api Node Client live tests', function() {
     });
 
     after(function() {
-        this.comparisons.destroy(this.identifier);
-        this.comparisons.destroy(this.identifier2);
-        this.comparisons.destroy(this.identifier3);
+        this.comparisons.destroy(this.identifier).catch((err) => {});
+        this.comparisons.destroy(this.identifier2).catch((err) => {});
+        this.comparisons.destroy(this.identifier3).catch((err) => {});
     });
 
     describe('Create comparison from URLs', function() {
@@ -73,8 +73,9 @@ describe('Compare Api Node Client live tests', function() {
         });
 
         step('delete the comparison', function() {
-            this.comparisons.destroy(this.identifier).then(function() {
-                var request = this.comparisons.get(this.identifier);
+            var comparisons = this.comparisons;
+            comparisons.destroy(this.identifier).then(function() {
+                var request = comparisons.get(this.identifier);
                 return Promise.all([
                     request.should.eventually.be.rejected
                 ]);
@@ -83,6 +84,7 @@ describe('Compare Api Node Client live tests', function() {
     });
 
     describe('Create comparison from files', function() {
+
         it('should create a comparison', function() {
             var request = this.comparisons.create({
                 left: {
