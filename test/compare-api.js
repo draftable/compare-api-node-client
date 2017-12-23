@@ -7,9 +7,9 @@
 // the server after the comparison is created until comparison.ready = true then check that
 // comparison.failed = false.
 
-var chai = require('chai');
-var chaiAsPromised = require('chai-as-promised');
-var fs = require('fs');
+const chai = require('chai');
+const chaiAsPromised = require('chai-as-promised');
+const fs = require('fs');
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -21,21 +21,17 @@ describe('Compare Api Node Client live tests', function() {
         // These credentials are for the Draftable Comparison API Test Account and can be public.
         this.client = require('..').client('GOiDaN-test', 'fe055b5a54c4d58264f70050a469536e');
         this.comparisons = this.client.comparisons;
-        this.identifier = this.comparisons.generateIdentifier();
-        this.identifier2 = this.comparisons.generateIdentifier();
-        this.identifier3 = this.comparisons.generateIdentifier();
+        this.identifiers = Array.from({length: 3}, () => this.comparisons.generateIdentifier());
     });
 
     after(function() {
-        this.comparisons.destroy(this.identifier).catch((err) => {});
-        this.comparisons.destroy(this.identifier2).catch((err) => {});
-        this.comparisons.destroy(this.identifier3).catch((err) => {});
+        this.identifiers.forEach(identifier => this.comparisons.destroy(identifier).catch((err) => {}));
     });
 
     describe('Create comparison from URLs', function() {
 
         step('create the comparison', function() {
-            var request = this.comparisons.create({
+            const request = this.comparisons.create({
                 left: {
                     source: 'https://api.draftable.com/static/test-documents/code-of-conduct/left.rtf',
                     fileType: 'rtf'
@@ -44,38 +40,37 @@ describe('Compare Api Node Client live tests', function() {
                     source: 'https://api.draftable.com/static/test-documents/code-of-conduct/right.pdf',
                     fileType: 'pdf'
                 },
-                identifier: this.identifier
+                identifier: this.identifiers[0]
             });
             return Promise.all([
                 request.should.eventually.be.fulfilled,
-                request.should.eventually.have.property('identifier', this.identifier)
+                request.should.eventually.have.property('identifier', this.identifiers[0])
             ]);
         });
 
         step('retrieve the comparison', function() {
-            var request = this.comparisons.get(this.identifier);
+            const request = this.comparisons.get(this.identifiers[0]);
             return Promise.all([
                 request.should.eventually.be.fulfilled,
-                request.should.eventually.have.property('identifier', this.identifier)
+                request.should.eventually.have.property('identifier', this.identifiers[0])
             ]);
         });
 
         step('generate a public viewer URL', function() {
-            var viewerURL = this.comparisons.publicViewerURL(this.identifier);
+            const viewerURL = this.comparisons.publicViewerURL(this.identifiers[0]);
             viewerURL.should.be.a('string');
             viewerURL.should.not.be.empty;
         });
 
         step('generate a signed viewer URL', function() {
-            var viewerURL = this.comparisons.signedViewerURL(this.identifier);
+            const viewerURL = this.comparisons.signedViewerURL(this.identifiers[0]);
             viewerURL.should.be.a('string');
             viewerURL.should.not.be.empty;
         });
 
         step('delete the comparison', function() {
-            var comparisons = this.comparisons;
-            comparisons.destroy(this.identifier).then(function() {
-                var request = comparisons.get(this.identifier);
+            this.comparisons.destroy(this.identifiers[0]).then(() => {
+                const request = this.comparisons.get(this.identifiers[0]);
                 return Promise.all([
                     request.should.eventually.be.rejected
                 ]);
@@ -86,7 +81,7 @@ describe('Compare Api Node Client live tests', function() {
     describe('Create comparison from files', function() {
 
         it('should create a comparison', function() {
-            var request = this.comparisons.create({
+            const request = this.comparisons.create({
                 left: {
                     source: fs.readFileSync('test/assets/left.rtf'),
                     fileType: 'rtf'
@@ -95,18 +90,18 @@ describe('Compare Api Node Client live tests', function() {
                     source: fs.readFileSync('test/assets/right.pdf'),
                     fileType: 'pdf'
                 },
-                identifier: this.identifier2
+                identifier: this.identifiers[1]
             });
             return Promise.all([
                 request.should.eventually.be.fulfilled,
-                request.should.eventually.have.property('identifier', this.identifier2)
+                request.should.eventually.have.property('identifier', this.identifiers[1])
             ]);
         });
     });
 
     describe('Create comparison where one side is file and other side is a URL', function() {
         it('should create a comparison', function() {
-            var request = this.comparisons.create({
+            const request = this.comparisons.create({
                 left: {
                     source: fs.readFileSync('test/assets/left.rtf'),
                     fileType: 'rtf'
@@ -115,11 +110,11 @@ describe('Compare Api Node Client live tests', function() {
                     source: 'https://api.draftable.com/static/test-documents/code-of-conduct/right.pdf',
                     fileType: 'pdf'
                 },
-                identifier: this.identifier3
+                identifier: this.identifiers[2]
             });
             return Promise.all([
                 request.should.eventually.be.fulfilled,
-                request.should.eventually.have.property('identifier', this.identifier3)
+                request.should.eventually.have.property('identifier', this.identifiers[2])
             ]);
         });
     });
