@@ -58,10 +58,20 @@ Call it to create a `Client` for your API account.
 
 At present, `Client` has a single property, `comparisons`, that yields a `ComparisonsClient` that manages the comparisons for your API account.
 
-So, we'll assume you set things up as follows:
+A client is set up as follows:
 
-    const comparisons = require('@draftable/compare-api').client(<yourAccountId>, <yourAuthToken>).comparisons;
+    const comparisons = require('@draftable/compare-api').client(
+        "<yourAccountId>",  // Replace with your actual credentials from:
+        "<yourAuthToken>"   // https://api.draftable.com/account/credentials
+    ).comparisons;
 
+To connect to a self-hosted Draftable installation, provide the base URL as the third parameter:
+
+    const comparisons = require('@draftable/compare-api').client(
+        "<yourAccountId>",
+        "<yourAuthToken>",
+        "https://draftable.example.com/api/v1"  // replace this with the correct URL for yoru installation
+    ).comparisons;
 
 ### Getting comparisons
 

@@ -1,14 +1,13 @@
 // @flow
 import {AuthenticatedNeedleClient} from '../../utilities';
 import {generateIdentifier as _generateIdentifier} from './utilities';
-import getViewerURL from './getViewerURL';
-import type {DateParameter} from './getViewerURL';
-import {comparisonsEndpointURL, getComparisonEndpointURL} from './urls';
 
 import {allowedFileTypes} from './fileTypes';
 import type {FileType} from './fileTypes';
 
 import Comparison from './Comparison';
+import Urls from "../urls";
+import type {DateParameter} from '../urls';
 
 type Stream = {
     pipe: Function;
@@ -22,6 +21,7 @@ type Side = {
 
 export default class ComparisonsEndpoint {
     __needleClient: AuthenticatedNeedleClient;
+    __urls: Urls;
     get accountId(): string {
         return this.__needleClient.accountId;
     }
@@ -29,12 +29,13 @@ export default class ComparisonsEndpoint {
         return this.__needleClient.authToken;
     }
 
-    constructor({accountId, authToken}: {accountId: string, authToken: string}) {
+    constructor({accountId, authToken, urls}: {accountId: string, authToken: string, urls: Urls}) {
         this.__needleClient = new AuthenticatedNeedleClient({accountId, authToken});
+        this.__urls= urls;
     }
 
     getAll = (): Promise<Comparison> =>
-        this.__needleClient.get(comparisonsEndpointURL).then(data => {
+        this.__needleClient.get(this.__urls.comparisonsEndpointURL).then(data => {
             if (!data || !data.results) {
                 throw new Error(`Unexpected response received - expected object with non-null results array, instead got: ${JSON.stringify(data)}`);
             }
@@ -42,7 +43,7 @@ export default class ComparisonsEndpoint {
         });
 
     get = (identifier: string): Promise<Comparison> =>
-        this.__needleClient.get(getComparisonEndpointURL({identifier})).then((data: ?any) => {
+        this.__needleClient.get(this.__urls.getComparisonEndpointURL({identifier})).then((data: ?any) => {
             if (!data) {
                 throw new Error('Unexpected response received - expected non-empty comparison object, instead got nothing.');
             }
@@ -77,7 +78,7 @@ export default class ComparisonsEndpoint {
                     sideData.display_name = data.displayName;
                 }
                 sideData.source_url = data.source;
-                var return_val = {};
+                let return_val = {};
                 return_val[side] = sideData;
                 return return_val;
             }
@@ -100,7 +101,7 @@ export default class ComparisonsEndpoint {
                 public: publiclyAccessible,
                 expiry_time: expires
             };
-            return this.__needleClient.post(comparisonsEndpointURL, data, multipartRequired).then((data: ?any) => {
+            return this.__needleClient.post(this.__urls.comparisonsEndpointURL, data, multipartRequired).then((data: ?any) => {
                 if (!data) {
                     throw new Error('Unexpected response received - expected non-empty comparison object, instead got nothing.');
                 }
@@ -112,13 +113,13 @@ export default class ComparisonsEndpoint {
     };
 
     destroy = (identifier: string): Promise<null> =>
-        this.__needleClient.destroy(getComparisonEndpointURL({identifier}));
+        this.__needleClient.destroy(this.__urls.getComparisonEndpointURL({identifier}));
 
     generateIdentifier = (): string => _generateIdentifier();
 
     publicViewerURL = (identifier: string, wait?: boolean): string =>
-        getViewerURL(this.accountId, null, identifier, null, wait || false);
+        this.__urls.getViewerURL(this.accountId, null, identifier, null, wait || false);
 
     signedViewerURL = (identifier: string, valid_until?: DateParameter, wait?: boolean): string =>
-        getViewerURL(this.accountId, this.authToken, identifier, valid_until || (Date.now() + 30 * 60 * 1000), wait || false);
+        this.__urls.getViewerURL(this.accountId, this.authToken, identifier, valid_until || (Date.now() + 30 * 60 * 1000), wait || false);
 }
