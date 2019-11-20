@@ -2,7 +2,7 @@
   "name": "@draftable/compare-api",
   "version": "1.2.0",
   "description": "Client library for Draftable's document comparison API",
-  "license": "ISC",
+  "license": "MIT",
   "homepage": "https://draftable.com",
   "repository": "draftable/compare-api-node-client",
   "bugs": {
