@@ -31,7 +31,7 @@
   ],
   "main": "dist/index.js",
   "dependencies": {
-    "needle": "^2.0.1"
+    "needle": "^2.4.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.0",
