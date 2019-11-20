@@ -9,14 +9,13 @@ import Comparison from './Comparison';
 import Urls from "../urls";
 import type {DateParameter} from '../urls';
 
-type Stream = {
-    pipe: Function;
-}
+type Stream = { pipe: Function, ... }
 
 type Side = {
     source: Stream | string,
     fileType: FileType,
     displayName?: ?string,
+    ...
 }
 
 export default class ComparisonsEndpoint {
@@ -29,7 +28,12 @@ export default class ComparisonsEndpoint {
         return this.__needleClient.authToken;
     }
 
-    constructor({accountId, authToken, urls}: {accountId: string, authToken: string, urls: Urls}) {
+    constructor({accountId, authToken, urls}: {
+        accountId: string,
+        authToken: string,
+        urls: Urls,
+        ...
+    }) {
         this.__needleClient = new AuthenticatedNeedleClient({accountId, authToken});
         this.__urls= urls;
     }
@@ -50,7 +54,14 @@ export default class ComparisonsEndpoint {
             return new Comparison(data);
         });
 
-    create = ({left, right, identifier, publiclyAccessible, expires}: {left: Side, right: Side, identifier?: ?string, publiclyAccessible?: ?boolean, expires?: ?DateParameter}): Promise<Comparison> => {
+    create = ({left, right, identifier, publiclyAccessible, expires}: {
+        left: Side,
+        right: Side,
+        identifier?: ?string,
+        publiclyAccessible?: ?boolean,
+        expires?: ?DateParameter,
+        ...
+    }): Promise<Comparison> => {
         // We need to use a multipart request when either either file is specified using a buffer rather than a URL.
         let multipartRequired = !(typeof left.source === 'string' && typeof right.source === 'string');
         function getSideData(side: string, data: Side) {

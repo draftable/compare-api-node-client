@@ -8,7 +8,12 @@ class Client {
     __authToken: string;
     __urls: Urls;
 
-    constructor({accountId, authToken, baseUrl}: {accountId: string, authToken: string, baseUrl: ?string}) {
+    constructor({accountId, authToken, baseUrl}: {
+        accountId: string,
+        authToken: string,
+        baseUrl: ?string,
+        ...
+    }) {
         this.__accountId = accountId;
         this.__authToken = authToken;
         this.__urls = new Urls(typeof baseUrl === 'string' ? baseUrl : "https://api.draftable.com/v1");

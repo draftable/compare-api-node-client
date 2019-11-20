@@ -5,6 +5,7 @@ type SideData = {
     file_type: FileType,
     source_url?: string,
     display_name?: string,
+    ...
 }
 
 type ComparisonData = {
@@ -18,12 +19,14 @@ type ComparisonData = {
     ready: boolean,
     failed?: boolean,
     error_message?: string,
+    ...
 };
 
 type ComparisonSide = {
     fileType : FileType,
     sourceURL?: string,
     displayName?: string,
+    ...
 }
 
 export default class Comparison {

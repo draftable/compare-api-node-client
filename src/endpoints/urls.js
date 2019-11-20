@@ -6,7 +6,7 @@ export type DateParameter = Date | string | number;
 export default class Urls {
   __baseUrl: string;
 
-  constructor(baseUrl: { baseUrl: string }) {
+  constructor(baseUrl: { baseUrl: string, ... }) {
     this.__baseUrl = baseUrl;
   }
 
@@ -18,11 +18,15 @@ export default class Urls {
     return `${this.__baseUrl}/comparisons`;
   }
 
-  getComparisonEndpointURL({identifier}: { identifier: string }): string {
+  getComparisonEndpointURL({identifier}: { identifier: string, ... }): string {
     return `${this.comparisonsEndpointURL}/${identifier}`;
   }
 
-  getComparisonViewerURL({accountId, identifier}: { accountId: string, identifier: string }): string {
+  getComparisonViewerURL({accountId, identifier}: {
+    accountId: string,
+    identifier: string,
+    ...
+  }): string {
     return `${this.comparisonsEndpointURL}/viewer/${accountId}/${identifier}`;
   }
 

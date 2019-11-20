@@ -11,4 +11,4 @@ export const allowedFileTypes = {
     ppt: 'ppt',
 };
 
-export type FileType = $Enum<typeof allowedFileTypes>;
+export type FileType = $Keys<typeof allowedFileTypes>;
