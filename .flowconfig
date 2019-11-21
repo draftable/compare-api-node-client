@@ -1,4 +1,8 @@
+[declarations]
+<PROJECT_ROOT>/node_modules/.*
+
 [ignore]
+<PROJECT_ROOT>/dist/.*
 
 [include]
 
@@ -8,5 +12,21 @@
 all=warn
 
 [options]
+emoji=true
+include_warnings=true
+munge_underscores=true
+module.use_strict=true
 
 [strict]
+deprecated-type
+nonstrict-import
+sketchy-null
+unclear-type
+unsafe-getters-setters
+untyped-import
+untyped-type-import
+
+[untyped]
+
+[version]
+^0.112.0
