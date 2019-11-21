@@ -4,5 +4,8 @@
     "files.trimTrailingWhitespace": false,
 
     // Conflicts with Flow extension
-    "javascript.validate.enable": false
+    "javascript.validate.enable": false,
+
+    // Run Flow server in IDE lazy mode
+    "flow.lazyMode": "ide"
 }
