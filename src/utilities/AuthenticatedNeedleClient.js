@@ -47,6 +47,9 @@ export default class AuthenticatedNeedleClient {
     __needlePromiseCallback({expectedStatusCode, resolve, reject}: {expectedStatusCode: number, resolve: (data: ?Object) => void, reject: (error: Error) => void}) {
         return (error: Error, response: {statusCode: number, body: ?Object}) => {
             if (error) {
+                if (error.code === "DEPTH_ZERO_SELF_SIGNED_CERT") {
+                    reject(new WrappedError("Unable to submit request as server is using an untrusted self-signed certificate.", error));
+                }
                 reject(new WrappedError("Unable to submit request.", error));
             } else if (response.statusCode !== expectedStatusCode) {
                 const bodyDescription = response.body ? " Response body: " + JSON.stringify(response.body) : "";
