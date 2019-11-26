@@ -1,60 +1,97 @@
 // @flow
 
 import needle from 'needle';
-import {dataContainsStream, WrappedError} from '../utilities';
+import { dataContainsStream, WrappedError } from ".";
 
 export default class AuthenticatedNeedleClient {
     accountId: string;
+
     authToken: string;
 
-    constructor({accountId, authToken}: {accountId: string, authToken: string}) {
+    constructor({ accountId, authToken }: { accountId: string, authToken: string }) {
         this.accountId = accountId;
         this.authToken = authToken;
     }
 
     __needle_get(url: string, parameters: ?Object, callback: (error: any, response: Object) => void): void {
-        needle.request('GET', url, parameters, {
-            json: true,
-            accept: 'application/json',
-            decode: true,
-            headers: {
-                'Authorization': `Token ${this.authToken}`,
+        needle.request(
+            'GET',
+            url,
+            parameters,
+            {
+                json: true,
+                accept: 'application/json',
+                decode: true,
+                headers: {
+                    Authorization: `Token ${this.authToken}`,
+                },
             },
-        }, callback);
+            callback,
+        );
     }
 
-    __needle_post(url: string, multipart: boolean, data: Object, callback: (error: any, response: Object) => void): void {
-        needle.request('POST', url, data, {
-            multipart,
-            json: !multipart,
-            accept: 'application/json',
-            decode: true,
-            headers: {
-                'Authorization': `Token ${this.authToken}`,
+    __needle_post(
+        url: string,
+        multipart: boolean,
+        data: Object,
+        callback: (error: any, response: Object) => void,
+    ): void {
+        needle.request(
+            'POST',
+            url,
+            data,
+            {
+                multipart,
+                json: !multipart,
+                accept: 'application/json',
+                decode: true,
+                headers: {
+                    Authorization: `Token ${this.authToken}`,
+                },
             },
-        }, callback);
+            callback,
+        );
     }
 
     __needle_delete(url: string, callback: (error: any, response: Object) => void): void {
-        needle.request('DELETE', url, null, {
-            json: true,
-            accept: 'application/json',
-            decode: true,
-            headers: {
-                'Authorization': `Token ${this.authToken}`,
+        needle.request(
+            'DELETE',
+            url,
+            null,
+            {
+                json: true,
+                accept: 'application/json',
+                decode: true,
+                headers: {
+                    Authorization: `Token ${this.authToken}`,
+                },
             },
-        }, callback);
+            callback,
+        );
     }
 
-    __needlePromiseCallback({expectedStatusCode, resolve, reject}: {expectedStatusCode: number, resolve: (data: ?Object) => void, reject: (error: Error) => void}) {
-        return (error: Error, response: {statusCode: number, body: ?Object}) => {
+    __needlePromiseCallback({
+        expectedStatusCode,
+        resolve,
+        reject,
+    }: {
+        expectedStatusCode: number,
+        resolve: (data: ?Object) => void,
+        reject: (error: Error) => void,
+    }) {
+        return (error: Error, response: { statusCode: number, body: ?Object }) => {
             if (error) {
-                if (error.code === "DEPTH_ZERO_SELF_SIGNED_CERT") {
-                    reject(new WrappedError("Unable to submit request as server is using an untrusted self-signed certificate.", error));
+                if (error.code === 'DEPTH_ZERO_SELF_SIGNED_CERT') {
+                    reject(
+                        new WrappedError(
+                            'Unable to submit request as server is using an untrusted self-signed certificate.',
+                            error,
+                        ),
+                    );
                 }
-                reject(new WrappedError("Unable to submit request.", error));
+                reject(new WrappedError('Unable to submit request.', error));
             } else if (response.statusCode !== expectedStatusCode) {
-                const bodyDescription = response.body ? " Response body: " + JSON.stringify(response.body) : "";
+                const bodyDescription = response.body ? ` Response body: ${JSON.stringify(response.body)}` : '';
                 if (response.statusCode === 404) {
                     reject(new Error(`Not found.${bodyDescription}`));
                 }
@@ -67,7 +104,11 @@ export default class AuthenticatedNeedleClient {
                 if (response.statusCode === 403) {
                     reject(new Error(`Unable to authenticate.${bodyDescription}`));
                 }
-                reject(new Error(`Unknown response received (status code was '${response.statusCode}', but we expected '${expectedStatusCode}').${bodyDescription}`));
+                reject(
+                    new Error(
+                        `Unknown response received (status code was '${response.statusCode}', but we expected '${expectedStatusCode}').${bodyDescription}`,
+                    ),
+                );
             } else {
                 resolve(response.body);
             }
@@ -75,15 +116,30 @@ export default class AuthenticatedNeedleClient {
     }
 
     get(url: string, parameters?: Object): Promise<?Object> {
-        return new Promise((resolve, reject) => this.__needle_get(url, parameters, this.__needlePromiseCallback({expectedStatusCode: 200, resolve, reject})));
+        return new Promise((resolve, reject) =>
+            this.__needle_get(
+                url,
+                parameters,
+                this.__needlePromiseCallback({ expectedStatusCode: 200, resolve, reject }),
+            ),
+        );
     }
 
     post(url: string, data: Object, multipart?: boolean): Promise<?Object> {
-        return new Promise((resolve, reject) => this.__needle_post(url, multipart || false, data, this.__needlePromiseCallback({expectedStatusCode: 201, resolve, reject})));
+        return new Promise((resolve, reject) =>
+            this.__needle_post(
+                url,
+                multipart || false,
+                data,
+                this.__needlePromiseCallback({ expectedStatusCode: 201, resolve, reject }),
+            ),
+        );
     }
 
     destroy(url: string): Promise<null> {
         // Needle still returns an object as response.body when there's no content. (It contains an empty buffer.) We just ignore it in favor of returning null.
-        return new Promise((resolve, reject) => this.__needle_delete(url, this.__needlePromiseCallback({expectedStatusCode: 204, resolve, reject}))).then(data => null);
+        return new Promise((resolve, reject) =>
+            this.__needle_delete(url, this.__needlePromiseCallback({ expectedStatusCode: 204, resolve, reject })),
+        ).then(data => null);
     }
 }

@@ -2,4 +2,4 @@
 
 import ComparisonsEndpoint from './ComparisonsEndpoint';
 
-export {ComparisonsEndpoint};
+export { ComparisonsEndpoint };

@@ -1,5 +1,5 @@
 // @flow
 
-import {ComparisonsEndpoint} from './comparisons'
+import { ComparisonsEndpoint } from './comparisons';
 
-export {ComparisonsEndpoint};
+export { ComparisonsEndpoint };

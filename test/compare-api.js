@@ -21,30 +21,29 @@ describe('Compare Api Node Client live tests', function() {
         // These credentials are for the Draftable Comparison API Test Account and can be public.
         this.client = require('..').client('GOiDaN-test', 'fe055b5a54c4d58264f70050a469536e');
         this.comparisons = this.client.comparisons;
-        this.identifiers = Array.from({length: 3}, () => this.comparisons.generateIdentifier());
+        this.identifiers = Array.from({ length: 3 }, () => this.comparisons.generateIdentifier());
     });
 
     after(function() {
-        this.identifiers.forEach(identifier => this.comparisons.destroy(identifier).catch((err) => {}));
+        this.identifiers.forEach(identifier => this.comparisons.destroy(identifier).catch(err => {}));
     });
 
     describe('Create comparison from URLs', function() {
-
         step('create the comparison', function() {
             const request = this.comparisons.create({
                 left: {
                     source: 'https://api.draftable.com/static/test-documents/code-of-conduct/left.rtf',
-                    fileType: 'rtf'
+                    fileType: 'rtf',
                 },
                 right: {
                     source: 'https://api.draftable.com/static/test-documents/code-of-conduct/right.pdf',
-                    fileType: 'pdf'
+                    fileType: 'pdf',
                 },
-                identifier: this.identifiers[0]
+                identifier: this.identifiers[0],
             });
             return Promise.all([
                 request.should.eventually.be.fulfilled,
-                request.should.eventually.have.property('identifier', this.identifiers[0])
+                request.should.eventually.have.property('identifier', this.identifiers[0]),
             ]);
         });
 
@@ -52,7 +51,7 @@ describe('Compare Api Node Client live tests', function() {
             const request = this.comparisons.get(this.identifiers[0]);
             return Promise.all([
                 request.should.eventually.be.fulfilled,
-                request.should.eventually.have.property('identifier', this.identifiers[0])
+                request.should.eventually.have.property('identifier', this.identifiers[0]),
             ]);
         });
 
@@ -71,30 +70,27 @@ describe('Compare Api Node Client live tests', function() {
         step('delete the comparison', function() {
             this.comparisons.destroy(this.identifiers[0]).then(() => {
                 const request = this.comparisons.get(this.identifiers[0]);
-                return Promise.all([
-                    request.should.eventually.be.rejected
-                ]);
+                return Promise.all([request.should.eventually.be.rejected]);
             });
         });
     });
 
     describe('Create comparison from files', function() {
-
         it('should create a comparison', function() {
             const request = this.comparisons.create({
                 left: {
                     source: fs.readFileSync('test/assets/left.rtf'),
-                    fileType: 'rtf'
+                    fileType: 'rtf',
                 },
                 right: {
                     source: fs.readFileSync('test/assets/right.pdf'),
-                    fileType: 'pdf'
+                    fileType: 'pdf',
                 },
-                identifier: this.identifiers[1]
+                identifier: this.identifiers[1],
             });
             return Promise.all([
                 request.should.eventually.be.fulfilled,
-                request.should.eventually.have.property('identifier', this.identifiers[1])
+                request.should.eventually.have.property('identifier', this.identifiers[1]),
             ]);
         });
     });
@@ -104,17 +100,17 @@ describe('Compare Api Node Client live tests', function() {
             const request = this.comparisons.create({
                 left: {
                     source: fs.readFileSync('test/assets/left.rtf'),
-                    fileType: 'rtf'
+                    fileType: 'rtf',
                 },
                 right: {
                     source: 'https://api.draftable.com/static/test-documents/code-of-conduct/right.pdf',
-                    fileType: 'pdf'
+                    fileType: 'pdf',
                 },
-                identifier: this.identifiers[2]
+                identifier: this.identifiers[2],
             });
             return Promise.all([
                 request.should.eventually.be.fulfilled,
-                request.should.eventually.have.property('identifier', this.identifiers[2])
+                request.should.eventually.have.property('identifier', this.identifiers[2]),
             ]);
         });
     });

@@ -5,10 +5,10 @@ import AuthenticatedNeedleClient from './AuthenticatedNeedleClient';
 import randomString from './randomString';
 import hexHMAC from './hexHMAC';
 
-export {WrappedError, AuthenticatedNeedleClient, randomString, hexHMAC};
+export { WrappedError, AuthenticatedNeedleClient, randomString, hexHMAC };
 
 export function isStream(object: any): boolean {
-    return object && object.pipe && (typeof object.pipe === "function");
+    return object && object.pipe && typeof object.pipe === 'function';
 }
 
 export function dataContainsStream(data: Object): boolean {
@@ -25,7 +25,7 @@ export function dataContainsStream(data: Object): boolean {
         }
         return false;
     }
-    if (typeof data !== "object") {
+    if (typeof data !== 'object') {
         return false;
     }
     for (const key in data) {
