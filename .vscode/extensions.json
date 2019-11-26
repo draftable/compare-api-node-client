@@ -1,7 +1,6 @@
 {
     "recommendations": [
         "DavidAnson.vscode-markdownlint",
-        "dotjoshjohnson.xml",
         "EditorConfig.editorconfig",
         "flowtype.flow-for-vscode"
     ]
