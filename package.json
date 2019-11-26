@@ -1,16 +1,17 @@
 {
   "name": "@draftable/compare-api",
   "version": "1.2.0",
-  "description": "Client library for Draftable's document comparison API",
+  "description": "Client library for the Draftable document comparison API",
   "license": "MIT",
   "homepage": "https://draftable.com",
   "repository": "draftable/compare-api-node-client",
   "bugs": {
-    "url": "https://github.com/draftable/compare-api-node-client/issues",
-    "email": "support@draftable.com"
+    "email": "support@draftable.com",
+    "url": "https://github.com/draftable/compare-api-node-client/issues"
   },
-  "author": "Draftable <hello@draftable.com>",
+  "author": "Draftable <contact@draftable.com>",
   "contributors": [
+    "Andrew Bird <andrew.bird@draftable.com>",
     "Andrew Ellerton <andrew.j.ellerton@gmail.com>",
     "Ben Toner <ben@draftable.com>",
     "James Payor <james@payor.com.au>",
@@ -21,13 +22,16 @@
     "api",
     "compare",
     "comparison",
-    "document",
-    "documents",
+    "comparisons",
     "pdf",
     "word",
+    "document",
+    "documents",
     "doc",
     "docx",
     "powerpoint",
+    "presentation",
+    "presentations",
     "ppt",
     "pptx"
   ],
