@@ -1,4 +1,5 @@
 // @flow
+
 import crypto from 'crypto';
 
 export default function hexHMAC(key: string, policy: Object): string {

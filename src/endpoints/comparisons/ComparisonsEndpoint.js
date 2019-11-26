@@ -1,4 +1,5 @@
 // @flow
+
 import {AuthenticatedNeedleClient} from '../../utilities';
 import {generateIdentifier as _generateIdentifier} from './utilities';
 

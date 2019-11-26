@@ -1,3 +1,5 @@
+// @flow
+
 import crypto from 'crypto';
 
 function tryGetBytes(length: number): number[] {

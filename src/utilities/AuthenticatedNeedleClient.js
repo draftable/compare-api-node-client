@@ -1,3 +1,5 @@
+// @flow
+
 import needle from 'needle';
 import {dataContainsStream, WrappedError} from '../utilities';
 

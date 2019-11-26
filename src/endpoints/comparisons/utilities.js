@@ -1,4 +1,5 @@
 // @flow
+
 import {randomString} from '../../utilities';
 
 const randomIdentifierLength = 12;

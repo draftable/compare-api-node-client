@@ -1,4 +1,5 @@
 // @flow
+
 import type {FileType} from './fileTypes';
 
 type SideData = {

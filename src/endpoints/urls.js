@@ -1,4 +1,5 @@
 // @flow
+
 import {hexHMAC} from '../utilities';
 
 export type DateParameter = Date | string | number;
