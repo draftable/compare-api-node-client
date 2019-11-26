@@ -3,8 +3,14 @@
     // See: https://github.com/editorconfig/editorconfig-vscode/issues/153
     "files.trimTrailingWhitespace": false,
 
-    // Conflicts with Flow extension
+    // Disable built-in formatter (using Prettier extension)
+    "javascript.format.enable": false,
+
+    // Disable built-in validator (using Flow extension)
     "javascript.validate.enable": false,
+
+    // Automatically apply fixes on save (inc. Prettier)
+    "eslint.autoFixOnSave": true,
 
     // Run Flow server in IDE lazy mode
     "flow.lazyMode": "ide"
