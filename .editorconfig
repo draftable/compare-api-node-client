@@ -19,3 +19,7 @@ trim_trailing_whitespace = false
 # Npm package files
 [{package,package-lock,npm-shrinkwrap}.json]
 indent_size = 2
+
+# WebStorm configuration
+[.idea/**/*.xml]
+insert_final_newline = false
