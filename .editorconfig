@@ -15,3 +15,7 @@ insert_final_newline = true
 # Markdown
 [*.md]
 trim_trailing_whitespace = false
+
+# Npm package files
+[{package,package-lock,npm-shrinkwrap}.json]
+indent_size = 2
