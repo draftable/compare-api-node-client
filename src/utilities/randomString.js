@@ -4,17 +4,19 @@ import crypto from 'crypto';
 
 function tryGetBytes(length: number): number[] {
     let bytes;
-    for (let attempt = 0; attempt < 100; ++attempt) {
+    for (let attempt = 0; attempt < 100; attempt += 1) {
         try {
             bytes = crypto.randomBytes(length);
             break;
-        } catch (error) {}
+        } catch (error) {
+            // pass
+        }
     }
     if (!bytes) {
         throw new Error('Unable to generate random bytes (attempted 100 times...)');
     }
     const byteArray = [];
-    for (let i = 0; i < length; ++i) {
+    for (let i = 0; i < length; i += 1) {
         byteArray.push(bytes.readUInt8(i));
     }
     return byteArray;

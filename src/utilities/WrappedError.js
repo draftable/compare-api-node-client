@@ -5,7 +5,9 @@ export default class WrappedError extends Error {
 
     constructor(message: string, innerException: Error) {
         super(message);
-        Error.captureStackTrace && Error.captureStackTrace(this, this.constructor);
+        if (Error.captureStackTrace) {
+            Error.captureStackTrace(this, this.constructor);
+        }
         this.innerException = innerException;
     }
 
