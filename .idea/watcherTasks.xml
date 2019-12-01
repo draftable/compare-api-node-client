@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectTasksOptions">
     <TaskOptions isEnabled="false">
-      <option name="arguments" value="$FilePathRelativeToProjectRoot$ src/ -d dist/" />
+      <option name="arguments" value="$FilePathRelativeToProjectRoot$ src/ -d dist/ --source-maps" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
