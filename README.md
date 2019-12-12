@@ -64,7 +64,7 @@ const comparisons = require('@draftable/compare-api').client(
 ).comparisons;
 ```
 
-To connect to a self-hosted Draftable installation, provide the base URL as the third parameter:
+To connect to a self-hosted Draftable installation or a regional Draftable Online endpoint, provide the base URL as the third parameter:
 
 ```js
 const comparisons = require('@draftable/compare-api').client(
