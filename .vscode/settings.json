@@ -15,5 +15,9 @@
     },
 
     // Run Flow server in IDE lazy mode
-    "flow.lazyMode": "ide"
+    "flow.lazyMode": "ide",
+
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
 }
