@@ -1,8 +1,8 @@
 {
     "recommendations": [
-        "DavidAnson.vscode-markdownlint",
+        "davidanson.vscode-markdownlint",
         "dbaeumer.vscode-eslint",
-        "EditorConfig.editorconfig",
+        "editorconfig.editorconfig",
         "esbenp.prettier-vscode",
         "flowtype.flow-for-vscode"
     ]
