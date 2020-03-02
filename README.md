@@ -1,23 +1,55 @@
 Draftable Compare API - Node.js Client Library
 ==============================================
 
-This is a thin Javascript client for Draftable's [document comparison API](https://draftable.com/comparison-api). It wraps the available endpoints, and handles authentication and signing for you. The library is [available on npm](https://www.npmjs.com/package/@draftable/compare-api) as `@draftable/compare-api`.
+[![npm nodever](https://img.shields.io/node/v/@draftable/compare-api)](https://www.npmjs.com/package/@draftable/compare-api)
+[![npm ver](https://img.shields.io/npm/v/@draftable/compare-api)](https://www.npmjs.com/package/@draftable/compare-api)
+[![npm dlm](https://img.shields.io/npm/dm/@draftable/compare-api)](https://www.npmjs.com/package/@draftable/compare-api)
+[![npm dlt](https://img.shields.io/npm/dt/@draftable/compare-api)](https://www.npmjs.com/package/@draftable/compare-api)
+[![license](https://img.shields.io/github/license/draftable/compare-api-node-client)](https://choosealicense.com/licenses/mit/)
 
-See the [full API documentation](https://api.draftable.com) for an introduction to the API, usage notes, and other references.
+A thin JavaScript client for the [Draftable API](https://draftable.com/rest-api) which wraps all available endpoints and handles authentication and signing.
+
+See the [full API documentation](https://api.draftable.com) for an introduction to the API, usage notes, and other reference material.
+
+- [Requirements](#requirements)
+- [Getting started](#getting-started)
+- [API reference](#api-reference)
+  - [Initializing the client](#initializing-the-client)
+  - [Retrieving comparisons](#retrieving-comparisons)
+  - [Deleting comparisons](#deleting-comparisons)
+  - [Creating comparisons](#creating-comparisons)
+  - [Displaying comparisons](#displaying-comparisons)
+  - [Utility methods](#utility-methods)
+- [Other information](#other-information)
+  - [Browser support](#browser-support)
+  - [Self-signed certificates](#self-signed-certificates)
+  - [Static type checking](#static-type-checking)
+
+Requirements
+------------
+
+- Operating system: Any maintained Linux, macOS, or Windows release
+- Node.js runtime: Any [maintained version](https://nodejs.org/en/about/releases/) (currently 10, 12, or 13)
 
 Getting started
 ---------------
 
-- Sign up for free at [api.draftable.com](https://api.draftable.com) to get your credentials.
-- `npm install @draftable/compare-api`
-- Instantiate the client:
+- Create a free [API account](https://api.draftable.com)
+- Retrieve your [credentials](https://api.draftable.com/account/credentials)
+- Install the library
 
-```js
-const client = require('@draftable/compare-api').client(<yourAccountId>, <yourAuthToken>);
-const comparisons = client.comparisons;
+```sh
+npm install @draftable/compare-api
 ```
 
-- Start creating comparisons:
+- Instantiate a client
+
+```js
+var client = require('@draftable/compare-api').client('<yourAccountId>', '<yourAuthToken>');
+var comparisons = client.comparisons;
+```
+
+- Start creating comparisons
 
 ```js
 comparisons.create({
@@ -30,111 +62,114 @@ comparisons.create({
         fileType: 'pdf',
     },
 }).then(function(comparison) {
-    console.log("Comparison created:", comparison);
-    # This generates a signed viewer URL that can be used to access the private comparison.
-    # By default, the URL will expire in 30 minutes. See the documentation for `signedViewerURL(...)`.
-    console.log("Viewer URL (expires in 30 min):", comparisons.signedViewerURL(comparison.identifier));
+    console.log("Comparison created: %s", comparison);
+    // Generate a signed viewer URL to access the private comparison. The expiry
+    // time defaults to 30 minutes if the valid_until parameter is not provided.
+    const viewerURL = comparisons.signedViewerURL(comparison.identifier);
+    console.log("Viewer URL (expires in 30 mins): %s", viewerURL);
 });
 ```
 
-Client API
-----------
+API reference
+-------------
 
-### Design notes
-
-- All API requests return _Promises_.
-  - Successful API calls that return data will resolve to `Comparison` objects with the parsed data.
-  - Successful calls that return no data (e.g. a `DELETE` request) resolve to `null`.
-  - Calls that fail for any reason will reject the Promise, with an `Error` object describing what went wrong.
-
-- API requests should always succeed in production. Errors only occur upon network failures, invalid data, or invalid authentication.
+- All API requests return _Promises_:
+  - Successful calls that return data resolve to `Comparison` objects
+  - Successful calls that return no data resolve to `null` (e.g. a `DELETE` request)
+  - Calls which fail for any reason will reject the `Promise` with an `Error` object
 
 ### Initializing the client
 
-`@draftable/compare-api` exports a single function, `client(accountId: string, authToken: string)`. Call it to create a `Client` for your API account.
+The package exports a function to create a `Client` for your API account: `client(accountId: string, authToken: string)`
 
-At present, `Client` has a single property, `comparisons`, that yields a `ComparisonsClient` that manages the comparisons for your API account.
+`Client` provides a `comparisons` property which yields a `ComparisonsClient` to manage the comparisons for your API account.
 
-A client is set up as follows:
+Creating a `Client` differs slightly based on the API endpoint being used:
 
 ```js
-const comparisons = require('@draftable/compare-api').client(
-    "<yourAccountId>",  // Replace with your actual credentials from:
-    "<yourAuthToken>"   // https://api.draftable.com/account/credentials
+// Draftable API (default endpoint)
+var comparisons = require('@draftable/compare-api').client(
+    '<yourAccountId>',  // Replace with your API credentials from:
+    '<yourAuthToken>'   // https://api.draftable.com/account/credentials
+).comparisons;
+
+// Draftable API regional endpoint or Self-hosted
+var comparisons = require('@draftable/compare-api').client(
+    '<yourAccountId>',  // Replace with your API credentials from the regional
+    '<yourAuthToken>',  // Draftable API endpoint or your Self-hosted container
+    'https://draftable.example.com/api/v1'  // Replace with the endpoint URL
 ).comparisons;
 ```
 
-To connect to a self-hosted Draftable installation or a regional Draftable Online endpoint, provide the base URL as the third parameter:
+For API Self-hosted you may need to [suppress TLS certificate validation](#self-signed-certificates) if the server is using a self-signed certificate (the default).
 
-```js
-const comparisons = require('@draftable/compare-api').client(
-    "<yourAccountId>",
-    "<yourAuthToken>",
-    "https://draftable.example.com/api/v1"  // replace this with the correct URL for yoru installation
-).comparisons;
-```
+### Retrieving comparisons
 
-### Getting comparisons
-
-`ComparisonsClient` provides `getAll()` and `get(identifier: string)`:
-
-- `getAll()` returns a `Promise` that resolves to a list of _all your comparisons_, ordered from newest to oldest. This is a potentially expensive operation.
-- `get(identifier: string)` returns a `Promise` that resolves to a single `Comparison` object, or rejects if there isn't a comparison with that identifier.
-
-#### Comparison objects
+- `getAll()`  
+  Returns a `Promise` which resolves to a list of all your comparisons, ordered from newest to oldest. This is potentially an expensive operation.
+- `get(identifier: string)`  
+  Returns a `Promise` which resolves to the specified `Comparison` or rejects if the specified comparison identifier does not exist.
 
 `Comparison` objects have the following properties:
 
-- `identifier`: a `string` giving the identifier.
-- `left`, `right`: objects giving information about each side, containing:
-  - `fileType`: the file extension.
-  - `sourceURL` _(optional)_: if the file was specified as a URL, this is a `string` giving that URL.
-  - `displayName` _(optional)_: a `string` giving the display name, if one was given.
-- `publiclyAccessible`: a `boolean` giving whether the comparison is public, or requires authentication to view.
-- `creationTime`: a `Date` giving when the comparison was created.
-- `expiryTime` _(optional)_: if the comparison will expire, a `Date` giving the expiry time.
-- `ready`: `boolean` indicating whether the comparison is ready for display.
+- `identifier: string`  
+  The unique identifier of the comparison
+- `left: object` / `right: object`  
+  Information about each side of the comparison
+  - `fileType: string`  
+    The file extension
+  - `sourceURL: string` _(optional)_  
+    The URL for the file if the original request specified by URL
+  - `displayName: string` _(optional)_  
+    The display name for the file if given in the original request
+- `publiclyAccessible: boolean`  
+  Indicates if the comparison is public
+- `creationTime: Date`  
+  Time in UTC when the comparison was created
+- `expiryTime: Date` _(optional)_  
+  The expiry time if the comparison is set to expire
+- `ready: boolean`  
+  Indicates if the comparison is ready to display
 
-If a `Comparison` is `ready` (i.e. it has been processed and is ready for display), it will have the following additional properties:
+If a `Comparison` is _ready_ (i.e. it has been processed) it has the following additional properties:
 
-- `readyTime`: `Date` giving the time the comparison became ready.
-- `failed`: `boolean` indicating whether the comparison succeeded or failed.
-- `errorMessage` _(only present if `failed`)_: provides the developer with the reason the comparison failed.
+- `failed: boolean`  
+  Indicates if comparison processing failed
+- `errorMessage: string` _(only present if `failed`)_  
+  Reason processing of the comparison failed
 
 #### Example usage
 
 ```js
-comparisons.get('<identifier>').then(function(comparison) {
-    const privateOrPublic = comparison.publiclyAccessible ? "private" : "public";
-    const readyOrNot = comparison.ready ? "ready" : "not ready yet";
-    console.log("Comparison '" + comparison.identifier + "' (" + privateOrPublic + ") is " + readyOrNot + ".");
-    if (comparison.ready) {
-        const secondsElapsed = Math.round((comparison.readyTime - comparison.creationTime) / 1000);
-        console.log("The comparison took " + secondsElapsed + " seconds.");
-        if (comparison.failed) {
-            console.log("The comparison failed. Error message: " + comparison.errorMessage);
-        }
+var identifier = '<identifier>';
+
+comparisons.get(identifier).then(function(comparison) {
+    const visibility = comparison.publiclyAccessible ? 'private' : 'public';
+    const status = comparison.ready ? 'ready' : 'not ready';
+    console.log("Comparison '%s' (%s) is %s.", comparison.identifier, visibility, status);
+
+    if (comparison.ready && comparison.failed) {
+        console.log("The comparison failed with error: %s", comparison.errorMessage);
     }
 });
 ```
 
 ### Deleting comparisons
 
-`ComparisonsClient` provides `destroy(identifier: string)`, which attempts to delete the comparison with that identifier.
-
-It returns a `Promise` that resolves (with no return value) on success, and rejects with an error message if no comparison with that identifier exists.
+- `destroy(identifier: string)`  
+  Returns a `Promise` which resolves on successfully deleting the specified comparison or rejects if no such comparison exists.
 
 #### Example usage
 
 ```js
-comparisons.getAll().then(function(comparisons) {
-    console.log("Deleting oldest 10 comparisons.");
-    const deleteStartIndex = Math.max(0, comparisons.length - 10);
+comparisons.getAll().then(function(oldest_comparisons) {
+    console.log("Deleting oldest 10 comparisons ...");
+    const deleteStartIndex = Math.max(0, oldest_comparisons.length - 10);
 
-    for (let i = deleteStartIndex; i < comparisons.length; ++i) {
-        const identifier = comparisons[i].identifier;
+    for (let i = deleteStartIndex; i < oldest_comparisons.length; ++i) {
+        const identifier = oldest_comparisons[i].identifier;
         comparisons.destroy(identifier).then(function() {
-            console.log("Comparison '" + identifier + "' deleted.");
+            console.log("Comparison '%s' deleted.", identifier);
         });
     }
 });
@@ -142,40 +177,45 @@ comparisons.getAll().then(function(comparisons) {
 
 ### Creating comparisons
 
-`ComparisonsClient` provides `create(options)`, which returns a `Promise` that resolves to a newly created `Comparison` object.
+- `create(options)`  
+  Returns a `Promise` which resolves to a new `Comparison` object.
 
-#### Creation options
+`options` consists of the following parameters:
 
-`options` should contain:
+- `left: object` / `right: object`  
+  Describes the left and right files (see below)
+- `identifier: string` _(optional)_  
+  Identifier to use for the comparison:
+  - If specified, the identifier must be unique (i.e. not already be in use)
+  - If unspecified, the API will automatically generate a unique identifier
+- `publiclyAccessible: boolean` _(optional)_  
+  Specifies the comparison visibility:
+  - If `false` or unspecified authentication is required to view the comparison
+  - If `true` the comparison can be accessed by anyone with knowledge of the URL
+- `expires: Date | string` _(optional)_  
+  Time at which the comparison will be deleted:
+  - Must be specified as a `Date` object or a `string` which can be parsed by `Date.parse`
+  - If specified, the provided expiry time must be UTC and in the future
+  - If unspecified, the comparison will never expire (but may be explicitly deleted)
 
-- `left`, `right`: objects describing the left and right files.
-- `identifier` _(optional)_: the identifier to use for the comparison.
-  - If specified, the identifier can't clash with an existing comparison.
-  - If left unspecified, the API will automatically generate one for you.
-- `publiclyAccessible` _(optional)_: whether the comparison is publicly accessible.
-  - Defaults to `false` if unspecified. If `true`, then the comparison viewer can be accessed by anyone, without authentication.
-  - See the full API documentation for details.
-- `expires` _(optional)_: a time at which the comparison will be automatically deleted.
-  - Can be specified as a `Date` object, or a `string` that `Date.parse` can understand.
-  - If specified, the time must be in the future.
-  - If unspecified, the comparison will never expire.
+`options.left` and `options.right` consist of the following parameters:
 
-`options.left` and `options.right` should contain:
-
-- `source`: either a `buffer` giving the file data, or a `string` giving a full URL from which Draftable will download the file.
-  - For instance, `{source: fs.readFileSync('path/to/file')}` or `{source: 'https://example.com/path/to/file'}`.
-- `fileType`: the type of the file, specified by the file extension.
-  - The following file types are supported:
-    - PDF: `pdf`
-    - Word: `docx`, `docm`, `doc`, `rtf`
-    - PowerPoint: `pptx`, `pptm`, `ppt`
-  - If you provide the incorrect file type, the comparison will fail.
-- `displayName` _(optional)_: a `string` that gives a name for the file to show in the comparison.
+- `source: buffer | string`  
+  Specifies the source for this side of the comparison:
+  - If provided as a `buffer`, contains the file data (e.g. `{source: fs.readFileSync('path/to/file')}`)
+  - If provided as a `string`, the URL from which the server will download the file (e.g. `{source: 'https://example.com/path/to/file'}`)
+- `fileType: string`  
+  The type of file being submitted:
+  - PDF: `pdf`
+  - Word: `docx`, `docm`, `doc`, `rtf`
+  - PowerPoint: `pptx`, `pptm`, `ppt`
+- `displayName: string` _(optional)_  
+  The name of the file shown in the comparison viewer
 
 #### Example usage
 
 ```js
-const identifier = comparisons.generateIdentifier(); # Generates a unique identifier.
+var identifier = comparisons.generateIdentifier();
 
 comparisons.create({
 
@@ -184,89 +224,112 @@ comparisons.create({
     left: {
         source: 'https://domain.com/left.pdf',
         fileType: 'pdf',
-        displayName: 'document.pdf',
+        displayName: 'Document.pdf',
     },
 
     right: {
         source: fs.readFileSync('path/to/right/file.docx'),
         fileType: 'docx',
-        displayName: 'document (revised).docx',
+        displayName: 'Document (revised).docx',
     },
 
-    # 'publiclyAccessible' is omitted, because we only want to let authenticated users view the comparison.
-
-    # Comparison expires 30 minutes into the future. (Date.now() is in milliseconds since the UNIX epoch.)
-    expires: new Date(Date.now() + 1000 * 60 * 30),
+    // Expire this comparison in 2 hours (default is no expiry)
+    expires: new Date(Date.now() + 1000 * 60 * 120),
 
 }).then(function(comparison) {
-    console.log("Created comparison:", comparison);
-
-    # This generates a signed viewer URL that can be used to access the private comparison for the next 30 minutes.
-    # At that time, both the URL and the comparison will expire. (Signed URLs default to expiring in 30 minutes.)
-    console.log("Viewer URL (expires in 30 min):", comparisons.signedViewerURL(comparison.identifier));
+    console.log("Created comparison: %s", comparison);
 });
 ```
 
 ### Displaying comparisons
 
-Comparisons are displayed using a _viewer URL_. See the section on displaying comparisons in the [full API documentation](https://api.draftable.com) for details.
+- `publicViewerURL(identifier: string, wait?: boolean)`  
+  Generates a public viewer URL for the specified comparison
+- `signedViewerURL(identifier: string, valid_until?: Date | string, wait?: boolean)`  
+  Generates a signed viewer URL for the specified comparison
 
-Viewer URLs are generated with the following methods:
+Both functions use the following common parameters:
 
-- `comparisons.publicViewerURL(identifier: string, wait?: boolean)`
-  - Viewer URL for a public comparison with the given `identifier`.
-  - If `wait` is `false` or unspecified, the viewer will show an error if no such comparison exists.
-  - If `wait` is `true`, the viewer will wait for a comparison with the given `identifier` to exist (potentially displaying a loading animation forever).
+- `identifier`  
+  Identifier of the comparison for which to generate a _viewer URL_
+- `wait` _(optional)_  
+  Specifies the behaviour of the viewer if the provided comparison does not exist
+  - If `false` or unspecified, the viewer will show an error if the `identifier` does not exist
+  - If `true`, the viewer will wait for a comparison with the provided `identifier` to exist  
+    Note this will result in a perpetual loading animation if the `identifier` is never created
 
-- `comparisons.signedViewerURL(identifier: string, valid_until?: Date | string, wait?: boolean)`
-  - Gets a signed viewer URL for a comparison with the given `identifier`. (The signature is an HMAC based on your credentials.)
-  - If `wait` is `true`, the viewer will wait forever for a comparison with the given `identifier` to exist.
-  - `valid_until` gives when the link will expire. It's specified as a `Date` or a `string` that `Date.parse` can understand.
-    - `valid_until` defaults to 30 minutes in the future, which is more than enough time for a user to have loaded the page.
+The `signedViewerURL` also supports the following parameters:
+
+- `valid_until` _(optional)_  
+  Time at which the URL will expire (no longer load)
+  - Must be specified as a `Date` object or a `string` which can be parsed by `Date.parse`
+  - If specified, the provided expiry time must be UTC and in the future
+  - If unspecified, the URL will be generated with the default 30 minute expiry
+
+See the displaying comparisons section in the [API documentation](https://api.draftable.com) for additional details.
 
 #### Example usage
 
 ```js
-const identifier = comparisons.generateIdentifier()
+var identifier = '<identifier>'
 
-# Start uploading our request in the background.
-comparisons.create({left: {...}, right: {...}});
-
-# Immediately give the user a view link to use, that displays a loading animation while we're creating the comparison.
-# The URL is valid for 30 minutes, the default amount of time.
-const viewerURL = comparisons.signedViewerURL(identifier, undefined, true);
-
-console.log(viewerURL);
+// Retrieve a signed viewer URL which is valid for 1 hour. The viewer will wait
+// for the comparison to exist in the event processing has not yet completed.
+var validUntil = new Date(Date.now() + 1000 * 60 * 60)
+var viewerURL = comparisons.signedViewerURL(identifier, valid_until, true);
+console.log("Viewer URL (expires in 1 hour): %s", viewerURL);
 ```
 
 ### Utility methods
 
-- `comparisons.generateIdentifier()` generates a random unique identifier for you to use.
+- `generateIdentifier()`  
+  Generates a random unique comparison identifier
 
 Other information
 -----------------
 
-### Static type checking with Flow (optional)
+### Browser support
 
-All of the source code has Flow type annotations ([flowtype.org](https://flowtype.org/)). The published package has typing information in `dist/flow`.
+This library is designed primarily for server-side usage. Usage in web browsers (client-side) is not currently supported.
 
-If you're using Flow, add the following to your `.flowconfig` to enable type checking:
+Calling the Draftable API via client-side JavaScript is generally discouraged as this implies sharing API credentials with end-users.
 
+### Self-signed certificates
+
+If connecting to an API Self-hosted endpoint which is using a self-signed certificate (the default) you will need to suppress certificate validation. This can be done by setting the `NODE_TLS_REJECT_UNAUTHORIZED` environment variable to `0`.
+
+See the below examples for different operating systems and shell environments. Note that all examples only set the variable for the running shell and it will not persist. To persist the setting consult the documentation for your shell environment. This should be done with caution as this setting suppresses certificate validation for **all** connections made by the Node.js runtime!
+
+(ba)sh (Linux, macOS, WSL)
+
+```sh
+export NODE_TLS_REJECT_UNAUTHORIZED=0
 ```
+
+PowerShell:
+
+```posh
+$env:NODE_TLS_REJECT_UNAUTHORIZED=0
+```
+
+Command Prompt (Windows):
+
+```cmd
+SET NODE_TLS_REJECT_UNAUTHORIZED=0
+```
+
+Setting this environment variable in production environments is strongly discouraged as it significantly lowers security. We only recommend setting this environment variable in development environments if configuring a CA signed certificate for API Self-hosted is not possible.
+
+### Static type checking
+
+We use [Flow](https://flow.org/) for static type checking:
+
+- All source code has [Flow](https://flow.org/) type annotations
+- The published package has type information available in `dist/flow`
+
+If you're using Flow you can enable type checking by adding the following snippet to your project's `.flowconfig`:
+
+```ini
 [libs]
 <PROJECT_ROOT>/node_modules/@draftable/compare-api/dist/flow
 ```
-
-### Known issues
-
-#### Streams support
-
-The lack of support for streams when uploading files is a known issue. This is a limitation that emerges from the lightweight request library we use, `needle`.
-
-If this causes you issues, consider adapting the code, or contact us at [support@draftable.com](mailto://support@draftable.com) as we may be able to help.
-
-#### Lack of browser compatibility
-
-We chose not to support browsers, as it's hazardous to be sharing your credentials with any users of your software.
-
-If you find yourself needing to use the API from in a browser context, contact us at [support@draftable.com](mailto://support@draftable.com) for pointers. You'll likely want to use more advanced authentication than just passing your auth token into requests made in the browser.
