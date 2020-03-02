@@ -17,6 +17,10 @@
     // Run Flow server in IDE lazy mode
     "flow.lazyMode": "ide",
 
+    // Markdown table of contents generation
+    "markdown.extension.toc.levels": "2..3",
+    "markdown.extension.toc.githubCompatibility": true,
+
     "[javascript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     }
