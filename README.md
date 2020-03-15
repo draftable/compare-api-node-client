@@ -1,8 +1,8 @@
 Draftable Compare API - Node.js Client Library
 ==============================================
 
-[![npm nodever](https://img.shields.io/node/v/@draftable/compare-api)](https://www.npmjs.com/package/@draftable/compare-api)
 [![npm ver](https://img.shields.io/npm/v/@draftable/compare-api)](https://www.npmjs.com/package/@draftable/compare-api)
+[![npm nodever](https://img.shields.io/node/v/@draftable/compare-api)](https://www.npmjs.com/package/@draftable/compare-api)
 [![npm dlm](https://img.shields.io/npm/dm/@draftable/compare-api)](https://www.npmjs.com/package/@draftable/compare-api)
 [![npm dlt](https://img.shields.io/npm/dt/@draftable/compare-api)](https://www.npmjs.com/package/@draftable/compare-api)
 [![travis](https://travis-ci.com/draftable/compare-api-node-client.svg?branch=stable)](https://travis-ci.com/draftable/compare-api-node-client)
