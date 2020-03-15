@@ -10,4 +10,4 @@
 *
 
 # Compiled output
-!dist/
+!dist/**
