@@ -81,7 +81,7 @@ API reference
 
 ### Initializing the client
 
-The package exports a function to create a `Client` for your API account: `client(accountId: string, authToken: string)`
+The package exports a function to create a `Client` for your API account.
 
 `Client` provides a `comparisons` property which yields a `ComparisonsClient` to manage the comparisons for your API account.
 
@@ -120,7 +120,7 @@ For API Self-hosted you may need to [suppress TLS certificate validation](#self-
   - `fileType: string`  
     The file extension
   - `sourceURL: string` _(optional)_  
-    The URL for the file if the original request specified by URL
+    The URL for the file if the original request was specified by URL
   - `displayName: string` _(optional)_  
     The display name for the file if given in the original request
 - `publiclyAccessible: boolean`  
