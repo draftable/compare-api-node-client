@@ -1,0 +1,17 @@
+language: node_js
+
+os: linux
+dist: xenial
+arch: amd64
+
+cache: npm
+
+node_js:
+  - 10
+  - 12
+  - 13
+  - node    # Always include latest stable
+  - lts/*   # Always include latest LTS
+
+notifications:
+  email: false

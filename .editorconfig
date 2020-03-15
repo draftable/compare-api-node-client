@@ -23,3 +23,7 @@ indent_size = 2
 # WebStorm configuration
 [.idea/**/*.xml]
 insert_final_newline = false
+
+# YAML
+[*.yml]
+indent_size = 2
