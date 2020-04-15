@@ -20,7 +20,7 @@ See the [full API documentation](https://api.draftable.com) for an introduction 
   - [Deleting comparisons](#deleting-comparisons)
   - [Creating comparisons](#creating-comparisons)
   - [Displaying comparisons](#displaying-comparisons)
-  - [Utility methods](#utility-methods)
+  - [Utility functions](#utility-functions)
 - [Other information](#other-information)
   - [Browser support](#browser-support)
   - [Self-signed certificates](#self-signed-certificates)
@@ -259,7 +259,7 @@ Both functions use the following common parameters:
   - If `true`, the viewer will wait for a comparison with the provided `identifier` to exist  
     Note this will result in a perpetual loading animation if the `identifier` is never created
 
-The `signedViewerURL` also supports the following parameters:
+The `signedViewerURL` function also supports the following parameters:
 
 - `valid_until` _(optional)_  
   Time at which the URL will expire (no longer load)
@@ -276,12 +276,12 @@ var identifier = '<identifier>'
 
 // Retrieve a signed viewer URL which is valid for 1 hour. The viewer will wait
 // for the comparison to exist in the event processing has not yet completed.
-var validUntil = new Date(Date.now() + 1000 * 60 * 60)
+var valid_until = new Date(Date.now() + 1000 * 60 * 60)
 var viewerURL = comparisons.signedViewerURL(identifier, valid_until, true);
 console.log("Viewer URL (expires in 1 hour): %s", viewerURL);
 ```
 
-### Utility methods
+### Utility functions
 
 - `generateIdentifier()`  
   Generates a random unique comparison identifier
