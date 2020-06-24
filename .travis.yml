@@ -12,9 +12,7 @@ cache: npm
 node_js:
   - 10
   - 12
-  - 13
-  - node    # Always include latest stable
-  - lts/*   # Always include latest LTS
+  - 14
 
 notifications:
   email: false

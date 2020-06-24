@@ -30,7 +30,7 @@ Requirements
 ------------
 
 - Operating system: Any maintained Linux, macOS, or Windows release
-- Node.js runtime: Any [maintained version](https://nodejs.org/en/about/releases/) (currently 10, 12, or 13)
+- Node.js runtime: Any [maintained version](https://nodejs.org/en/about/releases/)
 
 Getting started
 ---------------
