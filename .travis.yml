@@ -4,7 +4,7 @@ os:
   - linux
   - windows
 
-dist: xenial
+dist: focal
 arch: amd64
 
 cache: npm
