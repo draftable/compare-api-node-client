@@ -1,6 +1,13 @@
 Changelog
 =========
 
+v1.2.2
+------
+
+- Update Flow to v0.127.0
+- Update Mocha to v7.2.0
+- Update Needle to v2.5.0
+
 v1.2.1
 ------
 
