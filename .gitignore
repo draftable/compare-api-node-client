@@ -37,11 +37,3 @@ node_modules/
 [._]s[a-rt-v][a-z]
 [._]ss[a-gi-z]
 [._]sw[a-p]
-
-# WebStorm
-# https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
-.idea/tasks.xml
-.idea/usage.statistics.xml
-.idea/workspace.xml
-.idea/dictionaries/
-.idea/shelf/

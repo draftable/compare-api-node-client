@@ -1,0 +1,16 @@
+# How to manage projects under Version Control Systems
+# https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+# User-specific settings
+/tasks.xml
+/usage.statistics.xml
+/workspace.xml
+/dictionaries/
+/shelf/
+
+# Datasource local storage
+/dataSources.local.xml
+/dataSources/
+
+# HTTP client
+/httpRequests/
