@@ -14,22 +14,22 @@ const fs = require('fs');
 chai.use(chaiAsPromised);
 chai.should();
 
-describe('Compare Api Node Client live tests', function() {
+describe('Compare Api Node Client live tests', function () {
     this.timeout(10000);
 
-    before(function() {
+    before(function () {
         // These credentials are for the Draftable Comparison API Test Account and can be public.
         this.client = require('..').client('GOiDaN-test', 'fe055b5a54c4d58264f70050a469536e');
         this.comparisons = this.client.comparisons;
         this.identifiers = Array.from({ length: 3 }, () => this.comparisons.generateIdentifier());
     });
 
-    after(function() {
-        this.identifiers.forEach(identifier => this.comparisons.destroy(identifier).catch(err => {}));
+    after(function () {
+        this.identifiers.forEach((identifier) => this.comparisons.destroy(identifier).catch((err) => {}));
     });
 
-    describe('Create comparison from URLs', function() {
-        step('create the comparison', function() {
+    describe('Create comparison from URLs', function () {
+        step('create the comparison', function () {
             const request = this.comparisons.create({
                 left: {
                     source: 'https://api.draftable.com/static/test-documents/code-of-conduct/left.rtf',
@@ -47,7 +47,7 @@ describe('Compare Api Node Client live tests', function() {
             ]);
         });
 
-        step('retrieve the comparison', function() {
+        step('retrieve the comparison', function () {
             const request = this.comparisons.get(this.identifiers[0]);
             return Promise.all([
                 request.should.eventually.be.fulfilled,
@@ -55,19 +55,19 @@ describe('Compare Api Node Client live tests', function() {
             ]);
         });
 
-        step('generate a public viewer URL', function() {
+        step('generate a public viewer URL', function () {
             const viewerURL = this.comparisons.publicViewerURL(this.identifiers[0]);
             viewerURL.should.be.a('string');
             viewerURL.should.not.be.empty;
         });
 
-        step('generate a signed viewer URL', function() {
+        step('generate a signed viewer URL', function () {
             const viewerURL = this.comparisons.signedViewerURL(this.identifiers[0]);
             viewerURL.should.be.a('string');
             viewerURL.should.not.be.empty;
         });
 
-        step('delete the comparison', function() {
+        step('delete the comparison', function () {
             this.comparisons.destroy(this.identifiers[0]).then(() => {
                 const request = this.comparisons.get(this.identifiers[0]);
                 return Promise.all([request.should.eventually.be.rejected]);
@@ -75,8 +75,8 @@ describe('Compare Api Node Client live tests', function() {
         });
     });
 
-    describe('Create comparison from files', function() {
-        it('should create a comparison', function() {
+    describe('Create comparison from files', function () {
+        it('should create a comparison', function () {
             const request = this.comparisons.create({
                 left: {
                     source: fs.readFileSync('test/assets/left.rtf'),
@@ -95,8 +95,8 @@ describe('Compare Api Node Client live tests', function() {
         });
     });
 
-    describe('Create comparison where one side is file and other side is a URL', function() {
-        it('should create a comparison', function() {
+    describe('Create comparison where one side is file and other side is a URL', function () {
+        it('should create a comparison', function () {
             const request = this.comparisons.create({
                 left: {
                     source: fs.readFileSync('test/assets/left.rtf'),

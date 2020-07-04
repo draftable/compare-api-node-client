@@ -38,7 +38,7 @@ export default class ComparisonsEndpoint {
     }
 
     getAll = (): Promise<Comparison> =>
-        this.__needleClient.get(this.__urls.comparisonsEndpointURL).then(data => {
+        this.__needleClient.get(this.__urls.comparisonsEndpointURL).then((data) => {
             if (!data || !data.results) {
                 throw new Error(
                     `Unexpected response received - expected object with non-null results array, instead got: ${JSON.stringify(

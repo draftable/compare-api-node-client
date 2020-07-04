@@ -1,7 +1,7 @@
 // @flow
 
 import needle from 'needle';
-import { dataContainsStream, WrappedError } from ".";
+import { dataContainsStream, WrappedError } from '.';
 
 export default class AuthenticatedNeedleClient {
     accountId: string;
@@ -140,6 +140,6 @@ export default class AuthenticatedNeedleClient {
         // Needle still returns an object as response.body when there's no content. (It contains an empty buffer.) We just ignore it in favor of returning null.
         return new Promise((resolve, reject) =>
             this.__needle_delete(url, this.__needlePromiseCallback({ expectedStatusCode: 204, resolve, reject })),
-        ).then(data => null);
+        ).then((data) => null);
     }
 }
