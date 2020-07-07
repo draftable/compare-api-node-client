@@ -1,0 +1,2 @@
+# Exclude test documents from GitHub language detection
+*.rtf                   linguist-detectable=false
