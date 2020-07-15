@@ -1,4 +1,4 @@
-# Use a whitelist approach for this file!
+# Use an allowlist approach for this file!
 #
 # Note the following are *always* included:
 # - package.json
