@@ -1,6 +1,16 @@
 Changelog
 =========
 
+v1.2.3
+------
+
+- Update Babel to v7.10.4
+- Update ESLint to v7.3.1
+- Update Flow to v0.128.0
+- Update lodash to v4.17.19 (security fix)
+- Update Mocha to v8.0.1
+- Update Prettier to v2.0.5
+
 v1.2.2
 ------
 
