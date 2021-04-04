@@ -1,6 +1,13 @@
 Changelog
 =========
 
+v1.2.4
+------
+
+- Update Needle to v2.6.0
+- Update y18n to v4.0.1 (security fix)
+- Update all development dependencies
+
 v1.2.3
 ------
 
