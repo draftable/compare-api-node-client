@@ -1,6 +1,5 @@
 # macOS
 ._*
-.AppleDouble
 .DS_Store
 .LSOverride
 # Icon must end with two carriage returns (\r)
@@ -9,19 +8,23 @@ Icon
 # Windows
 [Dd]esktop.ini
 ehthumbs.db
-Thumbs.db
+ehthumbs_vista.db
+[Tt]humbs.db
+
+# Backups
+*.bak
+
+# Logs
+*.log
+log/
+logs/
 
 # Temporary
 *~
-*.bak
 *.tmp
 *.temp
 tmp/
 temp/
-
-# Logs
-*.log
-logs/
 
 # Build
 dist/
