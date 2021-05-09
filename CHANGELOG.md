@@ -1,6 +1,13 @@
 Changelog
 =========
 
+v1.2.5
+------
+
+- Update hosted-git-info to v4.17.21 (security fix)
+- Update lodash to v2.8.9 (security fix)
+- Update all development dependencies
+
 v1.2.4
 ------
 
