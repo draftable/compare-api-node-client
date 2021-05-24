@@ -1,6 +1,13 @@
 Changelog
 =========
 
+v1.3.0
+------
+
+- **BREAKING CHANGE**: Drop support for Node.js 10.x (minimum is now 12.x)
+- Update browserslist to v4.16.6 (security fix)
+- Update all development dependencies
+
 v1.2.5
 ------
 
