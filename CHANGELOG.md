@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v1.3.1
+------
+
+- Update glob-parent to v5.1.2 (security fix)
+- Update all Babel dependencies
+
 v1.3.0
 ------
 
