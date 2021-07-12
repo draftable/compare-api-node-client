@@ -5,8 +5,11 @@ Draftable Compare API - Node.js Client Library
 [![npm nodever](https://img.shields.io/node/v/@draftable/compare-api)](https://www.npmjs.com/package/@draftable/compare-api)
 [![npm dlm](https://img.shields.io/npm/dm/@draftable/compare-api)](https://www.npmjs.com/package/@draftable/compare-api)
 [![npm dlt](https://img.shields.io/npm/dt/@draftable/compare-api)](https://www.npmjs.com/package/@draftable/compare-api)
-[![travis](https://travis-ci.com/draftable/compare-api-node-client.svg?branch=stable)](https://travis-ci.com/draftable/compare-api-node-client)
 [![license](https://img.shields.io/github/license/draftable/compare-api-node-client)](https://choosealicense.com/licenses/mit/)
+
+[![travis](https://travis-ci.com/draftable/compare-api-node-client.svg?branch=stable)](https://travis-ci.com/draftable/compare-api-node-client)
+
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/draftable/compare-api-node-client)
 
 A thin JavaScript client for the [Draftable API](https://draftable.com/rest-api) which wraps all available endpoints and handles authentication and signing.
 
