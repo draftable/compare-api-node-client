@@ -7,7 +7,7 @@ Draftable Compare API - Node.js Client Library
 [![npm dlt](https://img.shields.io/npm/dt/@draftable/compare-api)](https://www.npmjs.com/package/@draftable/compare-api)
 [![license](https://img.shields.io/github/license/draftable/compare-api-node-client)](https://choosealicense.com/licenses/mit/)
 
-[![travis](https://travis-ci.com/draftable/compare-api-node-client.svg?branch=stable)](https://travis-ci.com/draftable/compare-api-node-client)
+[![travis](https://api.travis-ci.com/draftable/compare-api-node-client.svg?branch=stable)](https://app.travis-ci.com/github/draftable/compare-api-node-client)
 
 [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/draftable/compare-api-node-client)
 
