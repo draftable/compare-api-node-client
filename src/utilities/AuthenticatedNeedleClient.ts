@@ -1,21 +1,20 @@
-// @flow
-
-import needle from 'needle';
-import { dataContainsStream, WrappedError } from '.';
+import * as needle from 'needle';
+import { NeedleCallback } from 'needle';
+import WrappedError from './WrappedError';
 
 export default class AuthenticatedNeedleClient {
     accountId: string;
 
     authToken: string;
 
-    constructor({ accountId, authToken }: { accountId: string, authToken: string }) {
+    constructor({ accountId, authToken }: { accountId: string; authToken: string }) {
         this.accountId = accountId;
         this.authToken = authToken;
     }
 
-    __needle_get(url: string, parameters: ?Object, callback: (error: any, response: Object) => void): void {
+    __needle_get(url: string, parameters: Object, callback: NeedleCallback): void {
         needle.request(
-            'GET',
+            'get',
             url,
             parameters,
             {
@@ -30,14 +29,9 @@ export default class AuthenticatedNeedleClient {
         );
     }
 
-    __needle_post(
-        url: string,
-        multipart: boolean,
-        data: Object,
-        callback: (error: any, response: Object) => void,
-    ): void {
+    __needle_post(url: string, multipart: boolean, data: Object, callback: NeedleCallback | undefined): void {
         needle.request(
-            'POST',
+            'post',
             url,
             data,
             {
@@ -53,9 +47,9 @@ export default class AuthenticatedNeedleClient {
         );
     }
 
-    __needle_delete(url: string, callback: (error: any, response: Object) => void): void {
+    __needle_delete(url: string, callback: NeedleCallback | undefined): void {
         needle.request(
-            'DELETE',
+            'delete',
             url,
             null,
             {
@@ -75,13 +69,13 @@ export default class AuthenticatedNeedleClient {
         resolve,
         reject,
     }: {
-        expectedStatusCode: number,
-        resolve: (data: ?Object) => void,
-        reject: (error: Error) => void,
+        expectedStatusCode: number;
+        resolve: (data: Object) => void;
+        reject: (error: Error) => void;
     }) {
-        return (error: Error, response: { statusCode: number, body: ?Object }) => {
+        return (error: Error | null, response: { statusCode?: number; body: Object }) => {
             if (error) {
-                if (error.code === 'DEPTH_ZERO_SELF_SIGNED_CERT') {
+                if (error.name === 'DEPTH_ZERO_SELF_SIGNED_CERT') {
                     reject(
                         new WrappedError(
                             'Unable to submit request as server is using an untrusted self-signed certificate.',
@@ -115,17 +109,13 @@ export default class AuthenticatedNeedleClient {
         };
     }
 
-    get(url: string, parameters?: Object): Promise<?Object> {
+    get(url: string, parameters?: Object): Promise<Object> {
         return new Promise((resolve, reject) =>
-            this.__needle_get(
-                url,
-                parameters,
-                this.__needlePromiseCallback({ expectedStatusCode: 200, resolve, reject }),
-            ),
+            this.__needle_get(url, parameters, this.__needlePromiseCallback({ expectedStatusCode: 200, resolve, reject })),
         );
     }
 
-    post(url: string, data: Object, multipart?: boolean): Promise<?Object> {
+    post(url: string, data: Object, multipart?: boolean): Promise<Object> {
         return new Promise((resolve, reject) =>
             this.__needle_post(
                 url,

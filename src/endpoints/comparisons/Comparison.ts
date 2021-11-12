@@ -1,34 +1,4 @@
-// @flow
-
-import type { FileType } from './fileTypes';
-
-type SideData = {
-    file_type: FileType,
-    source_url?: string,
-    display_name?: string,
-    ...
-};
-
-type ComparisonData = {
-    identifier: string,
-    left: SideData,
-    right: SideData,
-    creation_time: string,
-    // noinspection ReservedWordAsName
-    public?: boolean,
-    expiry_time?: string,
-    ready: boolean,
-    failed?: boolean,
-    error_message?: string,
-    ...
-};
-
-type ComparisonSide = {
-    fileType: FileType,
-    sourceURL?: string,
-    displayName?: string,
-    ...
-};
+import { ComparisonData, ComparisonSide } from './types';
 
 export default class Comparison {
     identifier: string;

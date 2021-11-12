@@ -1,6 +1,4 @@
-// @flow
-
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 
 function tryGetBytes(length: number): number[] {
     let bytes;

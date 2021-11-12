@@ -1,5 +1,3 @@
-// @flow
-
 export const allowedFileTypes = {
     pdf: 'pdf',
     docx: 'docx',
@@ -10,5 +8,3 @@ export const allowedFileTypes = {
     pptm: 'pptm',
     ppt: 'ppt',
 };
-
-export type FileType = $Keys<typeof allowedFileTypes>;

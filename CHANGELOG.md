@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v1.3.2
+------
+
+- Migration to TypeScript
+
 v1.3.1
 ------
 

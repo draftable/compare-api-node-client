@@ -1,4 +1,4 @@
-// @flow
+
 
 import ComparisonsEndpoint from './ComparisonsEndpoint';
 

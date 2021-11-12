@@ -6,16 +6,10 @@
     // Disable built-in formatter (using Prettier extension)
     "javascript.format.enable": false,
 
-    // Disable built-in validator (using Flow extension)
-    "javascript.validate.enable": false,
-
     // Automatically apply fixes on save (inc. Prettier)
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true
     },
-
-    // Run Flow server in IDE lazy mode
-    "flow.lazyMode": "ide",
 
     // Markdown table of contents generation
     "markdown.extension.toc.levels": "2..3",
@@ -23,5 +17,9 @@
 
     "[javascript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "typescript.tsdk": "node_modules/typescript/lib"
 }

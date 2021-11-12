@@ -1,6 +1,4 @@
-// @flow
-
-import { randomString } from '../../utilities';
+import randomString from '../../utilities/randomString';
 
 const randomIdentifierLength = 12;
 const randomIdentifierCharset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

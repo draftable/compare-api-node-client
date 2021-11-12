@@ -1,13 +1,10 @@
-// @flow
-
-import { hexHMAC } from '../utilities';
-
-export type DateParameter = Date | string | number;
+import hexHMAC from '../utilities/hexHMAC';
+import { DateParameter } from './types';
 
 export default class Urls {
     __baseUrl: string;
 
-    constructor(baseUrl: { baseUrl: string, ... }) {
+    constructor(baseUrl: string) {
         this.__baseUrl = baseUrl;
     }
 
@@ -19,19 +16,19 @@ export default class Urls {
         return `${this.__baseUrl}/comparisons`;
     }
 
-    getComparisonEndpointURL({ identifier }: { identifier: string, ... }): string {
+    getComparisonEndpointURL({ identifier }: { identifier: string }): string {
         return `${this.comparisonsEndpointURL}/${identifier}`;
     }
 
-    getComparisonViewerURL({ accountId, identifier }: { accountId: string, identifier: string, ... }): string {
+    getComparisonViewerURL({ accountId, identifier }: { accountId: string; identifier: string }): string {
         return `${this.comparisonsEndpointURL}/viewer/${accountId}/${identifier}`;
     }
 
     getViewerURL(
         accountId: string,
-        authToken: ?string,
+        authToken: string | null | undefined,
         identifier: string,
-        valid_until: ?DateParameter,
+        valid_until: DateParameter | null | undefined,
         wait: boolean,
     ) {
         const baseURL = this.getComparisonViewerURL({ accountId, identifier });

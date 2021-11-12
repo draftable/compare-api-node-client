@@ -1,6 +1,4 @@
-// @flow
-
-import { ComparisonsEndpoint } from './endpoints';
+import { ComparisonsEndpoint } from './endpoints/index';
 import Urls from './endpoints/urls';
 
 class Client {
@@ -10,13 +8,21 @@ class Client {
 
     __urls: Urls;
 
-    constructor({ accountId, authToken, baseUrl }: { accountId: string, authToken: string, baseUrl: ?string, ... }) {
+    constructor({
+        accountId,
+        authToken,
+        baseUrl,
+    }: {
+        accountId: string;
+        authToken: string;
+        baseUrl?: string;
+    }) {
         this.__accountId = accountId;
         this.__authToken = authToken;
         this.__urls = new Urls(typeof baseUrl === 'string' ? baseUrl : 'https://api.draftable.com/v1');
     }
 
-    __comparisons: ?ComparisonsEndpoint;
+    __comparisons: ComparisonsEndpoint | undefined;
 
     get baseUrl(): string {
         return this.__urls.baseUrl;
@@ -34,6 +40,6 @@ class Client {
     }
 }
 
-export function client(accountId: string, authToken: string, baseUrl: ?string): Client {
+export function client(accountId: string, authToken: string, baseUrl?: string): Client {
     return new Client({ accountId, authToken, baseUrl });
 }

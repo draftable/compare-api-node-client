@@ -1,5 +1,3 @@
-// @flow
-
 export default class WrappedError extends Error {
     innerException: Error;
 

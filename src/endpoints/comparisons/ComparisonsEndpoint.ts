@@ -1,23 +1,10 @@
-// @flow
-
-import { AuthenticatedNeedleClient } from '../../utilities';
 import { generateIdentifier as _generateIdentifier } from './utilities';
-
-import { allowedFileTypes } from './fileTypes';
-import type { FileType } from './fileTypes';
-
-import Comparison from './Comparison';
 import Urls from '../urls';
-import type { DateParameter } from '../urls';
-
-type Stream = { pipe: Function, ... };
-
-type Side = {
-    source: Stream | string,
-    fileType: FileType,
-    displayName?: ?string,
-    ...
-};
+import { Side, Stream } from './types';
+import AuthenticatedNeedleClient from '../../utilities/AuthenticatedNeedleClient';
+import Comparison from './Comparison';
+import { allowedFileTypes } from './consts';
+import { DateParameter } from '../types';
 
 export default class ComparisonsEndpoint {
     __needleClient: AuthenticatedNeedleClient;
@@ -32,13 +19,13 @@ export default class ComparisonsEndpoint {
         return this.__needleClient.authToken;
     }
 
-    constructor({ accountId, authToken, urls }: { accountId: string, authToken: string, urls: Urls, ... }) {
+    constructor({ accountId, authToken, urls }: { accountId: string, authToken: string, urls: Urls, }) {
         this.__needleClient = new AuthenticatedNeedleClient({ accountId, authToken });
         this.__urls = urls;
     }
 
-    getAll = (): Promise<Comparison> =>
-        this.__needleClient.get(this.__urls.comparisonsEndpointURL).then((data) => {
+    getAll = (): Promise<Comparison[]> =>
+        this.__needleClient.get(this.__urls.comparisonsEndpointURL).then((data: any) => {
             if (!data || !data.results) {
                 throw new Error(
                     `Unexpected response received - expected object with non-null results array, instead got: ${JSON.stringify(
@@ -50,7 +37,7 @@ export default class ComparisonsEndpoint {
         });
 
     get = (identifier: string): Promise<Comparison> =>
-        this.__needleClient.get(this.__urls.getComparisonEndpointURL({ identifier })).then((data: ?any) => {
+        this.__needleClient.get(this.__urls.getComparisonEndpointURL({ identifier })).then((data: any) => {
             if (!data) {
                 throw new Error(
                     'Unexpected response received - expected non-empty comparison object, instead got nothing.',
@@ -68,10 +55,9 @@ export default class ComparisonsEndpoint {
     }: {
         left: Side,
         right: Side,
-        identifier?: ?string,
-        publiclyAccessible?: ?boolean,
-        expires?: ?DateParameter,
-        ...
+        identifier?: string,
+        publiclyAccessible?: boolean,
+        expires?: DateParameter,
     }): Promise<Comparison> => {
         // We need to use a multipart request when either either file is specified using a buffer rather than a URL.
         const multipartRequired = !(typeof left.source === 'string' && typeof right.source === 'string');
@@ -86,7 +72,7 @@ export default class ComparisonsEndpoint {
                     ).join('", "')}").`,
                 );
             }
-            const sideData: Object = {};
+            const sideData: { file_type?: string, display_name?: string , source_url?: string | Stream } = {};
             if (multipartRequired) {
                 sideData[`${side}.file_type`] = data.fileType;
                 if (data.displayName) {
@@ -132,7 +118,7 @@ export default class ComparisonsEndpoint {
             };
             return this.__needleClient
                 .post(this.__urls.comparisonsEndpointURL, data, multipartRequired)
-                .then((data: ?any) => {
+                .then((data: any) => {
                     if (!data) {
                         throw new Error(
                             'Unexpected response received - expected non-empty comparison object, instead got nothing.',

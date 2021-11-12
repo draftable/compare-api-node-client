@@ -1,4 +1,4 @@
-// @flow
+
 
 import WrappedError from './WrappedError';
 import AuthenticatedNeedleClient from './AuthenticatedNeedleClient';
