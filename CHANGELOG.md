@@ -1,10 +1,10 @@
 Changelog
 =========
 
-v1.3.2
+v1.4.0
 ------
 
-- Migration to TypeScript
+- Migration from Flow to TypeScript
 
 v1.3.1
 ------

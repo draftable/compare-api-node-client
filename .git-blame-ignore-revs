@@ -8,5 +8,8 @@
 # By default in this repository:
 # git config blame.ignoreRevsFile .git-blame-ignore-revs
 
-# Reformatting with ESLint & Prettier
+# Apply Prettier formatting to all TypeScript files
+64cde4a9beaf304b7c12b34eea2853faabf13939
+
+# Initial pass of source code through ESLint & Prettier
 cd93780f2dfde79483fe46e0de310c27faf9f2b8

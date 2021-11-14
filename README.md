@@ -27,7 +27,6 @@ See the [full API documentation](https://api.draftable.com) for an introduction 
 - [Other information](#other-information)
   - [Browser support](#browser-support)
   - [Self-signed certificates](#self-signed-certificates)
-  - [TypeScript](#typescript)
 
 Requirements
 ------------
@@ -323,12 +322,3 @@ SET NODE_TLS_REJECT_UNAUTHORIZED=0
 ```
 
 Setting this environment variable in production environments is strongly discouraged as it significantly lowers security. We only recommend setting this environment variable in development environments if configuring a CA signed certificate for API Self-hosted is not possible.
-
-### TypeScript
-
-The published package has type information available in `dist/types`
-
-```ini
-[libs]
-<PROJECT_ROOT>/node_modules/@draftable/compare-api/dist/types
-```
