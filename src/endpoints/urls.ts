@@ -2,7 +2,7 @@ import hexHMAC from '../utilities/hexHMAC';
 import { DateParameter } from './types';
 
 export default class Urls {
-    __baseUrl: string;
+    private __baseUrl: string;
 
     constructor(baseUrl: string) {
         this.__baseUrl = baseUrl;

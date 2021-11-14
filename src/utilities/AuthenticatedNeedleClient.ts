@@ -12,7 +12,7 @@ export default class AuthenticatedNeedleClient {
         this.authToken = authToken;
     }
 
-    __needle_get(url: string, parameters: Object, callback: NeedleCallback): void {
+    private __needle_get(url: string, parameters: Object, callback: NeedleCallback): void {
         needle.request(
             'get',
             url,
@@ -29,7 +29,7 @@ export default class AuthenticatedNeedleClient {
         );
     }
 
-    __needle_post(url: string, multipart: boolean, data: Object, callback: NeedleCallback | undefined): void {
+    private __needle_post(url: string, multipart: boolean, data: Object, callback: NeedleCallback | undefined): void {
         needle.request(
             'post',
             url,
@@ -47,7 +47,7 @@ export default class AuthenticatedNeedleClient {
         );
     }
 
-    __needle_delete(url: string, callback: NeedleCallback | undefined): void {
+    private __needle_delete(url: string, callback: NeedleCallback | undefined): void {
         needle.request(
             'delete',
             url,
@@ -64,7 +64,7 @@ export default class AuthenticatedNeedleClient {
         );
     }
 
-    __needlePromiseCallback({
+    private __needlePromiseCallback({
         expectedStatusCode,
         resolve,
         reject,
@@ -109,14 +109,18 @@ export default class AuthenticatedNeedleClient {
         };
     }
 
-    get(url: string, parameters?: Object): Promise<Object> {
-        return new Promise((resolve, reject) =>
-            this.__needle_get(url, parameters, this.__needlePromiseCallback({ expectedStatusCode: 200, resolve, reject })),
+    get<T extends Object>(url: string, parameters?: Object): Promise<T> {
+        return new Promise<T>((resolve, reject) =>
+            this.__needle_get(
+                url,
+                parameters,
+                this.__needlePromiseCallback({ expectedStatusCode: 200, resolve, reject }),
+            ),
         );
     }
 
-    post(url: string, data: Object, multipart?: boolean): Promise<Object> {
-        return new Promise((resolve, reject) =>
+    post<T extends Object>(url: string, data: Object, multipart?: boolean): Promise<T> {
+        return new Promise<T>((resolve, reject) =>
             this.__needle_post(
                 url,
                 multipart || false,
