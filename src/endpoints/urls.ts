@@ -2,18 +2,22 @@ import hexHMAC from '../utilities/hexHMAC';
 import { DateParameter } from './types';
 
 export default class Urls {
-    private __baseUrl: string;
+    private _baseUrl: string;
 
     constructor(baseUrl: string) {
-        this.__baseUrl = baseUrl;
+        this._baseUrl = baseUrl;
     }
 
     get baseUrl(): string {
-        return this.__baseUrl;
+        return this._baseUrl;
     }
 
     get comparisonsEndpointURL(): string {
-        return `${this.__baseUrl}/comparisons`;
+        return `${this._baseUrl}/comparisons`;
+    }
+
+    get exportsEndpointURL(): string {
+        return `${this._baseUrl}/exports`;
     }
 
     getComparisonEndpointURL({ identifier }: { identifier: string }): string {
@@ -22,6 +26,10 @@ export default class Urls {
 
     getComparisonViewerURL({ accountId, identifier }: { accountId: string; identifier: string }): string {
         return `${this.comparisonsEndpointURL}/viewer/${accountId}/${identifier}`;
+    }
+
+    getExportEndpointURL({ identifier }: { identifier: string }): string {
+        return `${this.exportsEndpointURL}/${identifier}`;
     }
 
     getViewerURL(

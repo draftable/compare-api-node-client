@@ -7,25 +7,25 @@ import { allowedFileTypes } from './consts';
 import { DateParameter } from '../types';
 
 export default class ComparisonsEndpoint {
-    private __needleClient: AuthenticatedNeedleClient;
+    private _needleClient: AuthenticatedNeedleClient;
 
-    private __urls: Urls;
+    private _urls: Urls;
 
     get accountId(): string {
-        return this.__needleClient.accountId;
+        return this._needleClient.accountId;
     }
 
     get authToken(): string {
-        return this.__needleClient.authToken;
+        return this._needleClient.authToken;
     }
 
     constructor({ accountId, authToken, urls }: { accountId: string; authToken: string; urls: Urls }) {
-        this.__needleClient = new AuthenticatedNeedleClient({ accountId, authToken });
-        this.__urls = urls;
+        this._needleClient = new AuthenticatedNeedleClient({ accountId, authToken });
+        this._urls = urls;
     }
 
     getAll = (): Promise<Comparison[]> =>
-        this.__needleClient.get<ComparisonsResult>(this.__urls.comparisonsEndpointURL).then((data) => {
+        this._needleClient.get<ComparisonsResult>(this._urls.comparisonsEndpointURL).then((data) => {
             if (!data || !data.results) {
                 throw new Error(
                     `Unexpected response received - expected object with non-null results array, instead got: ${JSON.stringify(
@@ -37,7 +37,7 @@ export default class ComparisonsEndpoint {
         });
 
     get = (identifier: string): Promise<Comparison> =>
-        this.__needleClient.get(this.__urls.getComparisonEndpointURL({ identifier })).then((data: any) => {
+        this._needleClient.get(this._urls.getComparisonEndpointURL({ identifier })).then((data: any) => {
             if (!data) {
                 throw new Error(
                     'Unexpected response received - expected non-empty comparison object, instead got nothing.',
@@ -116,8 +116,8 @@ export default class ComparisonsEndpoint {
                 public: publiclyAccessible,
                 expiry_time: expires,
             };
-            return this.__needleClient
-                .post(this.__urls.comparisonsEndpointURL, data, multipartRequired)
+            return this._needleClient
+                .post(this._urls.comparisonsEndpointURL, data, multipartRequired)
                 .then((data: any) => {
                     if (!data) {
                         throw new Error(
@@ -132,15 +132,15 @@ export default class ComparisonsEndpoint {
     };
 
     destroy = (identifier: string): Promise<null> =>
-        this.__needleClient.destroy(this.__urls.getComparisonEndpointURL({ identifier }));
+        this._needleClient.destroy(this._urls.getComparisonEndpointURL({ identifier }));
 
     generateIdentifier = (): string => _generateIdentifier();
 
     publicViewerURL = (identifier: string, wait?: boolean): string =>
-        this.__urls.getViewerURL(this.accountId, null, identifier, null, wait || false);
+        this._urls.getViewerURL(this.accountId, null, identifier, null, wait || false);
 
     signedViewerURL = (identifier: string, valid_until?: DateParameter, wait?: boolean): string =>
-        this.__urls.getViewerURL(
+        this._urls.getViewerURL(
             this.accountId,
             this.authToken,
             identifier,

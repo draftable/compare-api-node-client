@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v1.4.1
+------
+
+- Add support for exports
+
 v1.4.0
 ------
 
