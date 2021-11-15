@@ -12,7 +12,7 @@ export default class AuthenticatedNeedleClient {
         this.authToken = authToken;
     }
 
-    private __needle_get(url: string, parameters: Object, callback: NeedleCallback): void {
+    private _needle_get(url: string, parameters: Object, callback: NeedleCallback): void {
         needle.request(
             'get',
             url,
@@ -29,7 +29,7 @@ export default class AuthenticatedNeedleClient {
         );
     }
 
-    private __needle_post(url: string, multipart: boolean, data: Object, callback: NeedleCallback | undefined): void {
+    private _needle_post(url: string, multipart: boolean, data: Object, callback: NeedleCallback | undefined): void {
         needle.request(
             'post',
             url,
@@ -47,7 +47,7 @@ export default class AuthenticatedNeedleClient {
         );
     }
 
-    private __needle_delete(url: string, callback: NeedleCallback | undefined): void {
+    private _needle_delete(url: string, callback: NeedleCallback | undefined): void {
         needle.request(
             'delete',
             url,
@@ -64,7 +64,7 @@ export default class AuthenticatedNeedleClient {
         );
     }
 
-    private __needlePromiseCallback({
+    private _needlePromiseCallback({
         expectedStatusCode,
         resolve,
         reject,
@@ -111,21 +111,21 @@ export default class AuthenticatedNeedleClient {
 
     get<T extends Object>(url: string, parameters?: Object): Promise<T> {
         return new Promise<T>((resolve, reject) =>
-            this.__needle_get(
+            this._needle_get(
                 url,
                 parameters,
-                this.__needlePromiseCallback({ expectedStatusCode: 200, resolve, reject }),
+                this._needlePromiseCallback({ expectedStatusCode: 200, resolve, reject }),
             ),
         );
     }
 
     post<T extends Object>(url: string, data: Object, multipart?: boolean): Promise<T> {
         return new Promise<T>((resolve, reject) =>
-            this.__needle_post(
+            this._needle_post(
                 url,
                 multipart || false,
                 data,
-                this.__needlePromiseCallback({ expectedStatusCode: 201, resolve, reject }),
+                this._needlePromiseCallback({ expectedStatusCode: 201, resolve, reject }),
             ),
         );
     }
@@ -133,7 +133,7 @@ export default class AuthenticatedNeedleClient {
     destroy(url: string): Promise<null> {
         // Needle still returns an object as response.body when there's no content. (It contains an empty buffer.) We just ignore it in favor of returning null.
         return new Promise((resolve, reject) =>
-            this.__needle_delete(url, this.__needlePromiseCallback({ expectedStatusCode: 204, resolve, reject })),
+            this._needle_delete(url, this._needlePromiseCallback({ expectedStatusCode: 204, resolve, reject })),
         ).then((data) => null);
     }
 }
