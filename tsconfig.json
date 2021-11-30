@@ -1,17 +1,29 @@
 {
+
+    "include": ["src"],
+    "exclude": ["test"],
+
     "ts-node": {
+        // Load files specified by "files" and "include"
         "files": true
     },
+
     "compilerOptions": {
+        // Minimum ECMAScript version
         "target": "es5",
+
+        // Permit importing JavaScript files
         "allowJs": true,
+
+        // Skip type checking of declaration files
         "skipLibCheck": true,
-        // Ensure that .d.ts files are created by tsc, but not .js files
+
+        // Generate .d.ts files for all TS & JS files
         "declaration": true,
+        // Only emit .t.ds files (do not emit .js files)
         "emitDeclarationOnly": true,
-        // Ensure that Babel can safely transpile files in the TypeScript project
-        "isolatedModules": true,
-    },
-    "include": ["src"],
-    "exclude": ["test"]
+
+        // Warn on code which can't be interpreted by single-file transpilers (e.g. Babel)
+        "isolatedModules": true
+    }
 }
