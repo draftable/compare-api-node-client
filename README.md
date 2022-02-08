@@ -213,6 +213,7 @@ comparisons.getAll().then(function(oldest_comparisons) {
   - PDF: `pdf`
   - Word: `docx`, `docm`, `doc`, `rtf`
   - PowerPoint: `pptx`, `pptm`, `ppt`
+  - Text: `txt`
 - `displayName: string` _(optional)_  
   The name of the file shown in the comparison viewer
 

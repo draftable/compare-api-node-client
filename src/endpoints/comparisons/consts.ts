@@ -7,6 +7,7 @@ export const allowedFileTypes = {
     pptx: 'pptx',
     pptm: 'pptm',
     ppt: 'ppt',
+    txt: 'txt',
 };
 
 export default allowedFileTypes;

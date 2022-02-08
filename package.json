@@ -33,7 +33,8 @@
     "presentation",
     "presentations",
     "ppt",
-    "pptx"
+    "pptx",
+    "txt"
   ],
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
