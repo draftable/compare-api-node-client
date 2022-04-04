@@ -23,6 +23,7 @@ See the [full API documentation](https://api.draftable.com) for an introduction 
   - [Deleting comparisons](#deleting-comparisons)
   - [Creating comparisons](#creating-comparisons)
   - [Displaying comparisons](#displaying-comparisons)
+  - [Exporting comparisons](#exporting-comparisons)
   - [Utility functions](#utility-functions)
 - [Other information](#other-information)
   - [Browser support](#browser-support)
@@ -281,6 +282,57 @@ var identifier = '<identifier>'
 var valid_until = new Date(Date.now() + 1000 * 60 * 60)
 var viewerURL = comparisons.signedViewerURL(identifier, valid_until, true);
 console.log("Viewer URL (expires in 1 hour): %s", viewerURL);
+```
+
+### Exporting comparisons
+
+Export the comparison to PDF by sending the comparison identifier along with the requested export kind.
+
+- Four export kinds are supported.
+  - single_page: Displays the right side document only with highlights and deletion markers showing the diff
+  - combined: Displays both right and left sides
+  - left: Displays left side only
+  - right: Displays right side only
+
+After creating the export, you must poll using the export identifier to obtain the URL of the exported document.
+
+`Export` objects have the following properties:
+
+- `identifier: string`
+  The unique identifier of the export
+- `comparison: string`
+  The unique identifier of the comparison
+- `url: string`  
+  The URL for the file if the original request was specified by URL
+- `kind: string`
+  The export kind, one of the following `single_page`, `combined`, left or `right`
+- `ready: boolean`
+  Indicates if the export is ready to get
+- `failed: boolean`
+  Indicates if the export failed
+
+#### Export example usage
+
+Post request of the export
+
+```js
+client.exports
+  .requestExport({
+    comparison: "<identifier>",
+    kind: "combined",
+    include_cover_page: false,
+  })
+  .then((result: ExportResult) => {
+    console.log(result);
+  }
+```
+
+Get requested export
+
+```js
+client.exports.get(requestResponse.identifier).then((result: ExportResult) => {
+    console.log(result);
+  });
 ```
 
 ### Utility functions
