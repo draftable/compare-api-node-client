@@ -38,7 +38,7 @@ export type ComparisonSide = {
 
 export type FileType = keyof typeof allowedFileTypes;
 
-export type Stream = { pipe: Function };
+export type Stream = { pipe: unknown };
 
 export type Side = {
     source: Stream | string;

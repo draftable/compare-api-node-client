@@ -53,10 +53,13 @@
     "@babel/preset-typescript": "^7.16.0",
     "@types/needle": "^2.5.2",
     "@types/node": "^16.11.7",
+    "@typescript-eslint/eslint-plugin": "^5.18.0",
+    "@typescript-eslint/parser": "^5.18.0",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-prettier": "^4.0.0",
@@ -69,6 +72,7 @@
     "build": "babel --extensions .ts src/ -d dist/",
     "prepare": "npm run build",
     "test": "mocha",
-    "postbuild": "npx -p typescript tsc --declaration --allowJs --emitDeclarationOnly --outDir dist/types"
+    "postbuild": "npx -p typescript tsc --declaration --allowJs --emitDeclarationOnly --outDir dist/types",
+    "lint": "eslint src/**/*.ts"
   }
 }

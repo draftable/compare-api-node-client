@@ -6,3 +6,5 @@ const randomIdentifierCharset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTU
 export function generateIdentifier() {
     return randomString(randomIdentifierLength, randomIdentifierCharset);
 }
+
+export default generateIdentifier;

@@ -3,25 +3,25 @@ import Urls from '../urls';
 import { ExportRequest, ExportResult } from './types';
 
 export default class ExportsEndpoint {
-    private _needleClient: AuthenticatedNeedleClient;
+    private needleClient: AuthenticatedNeedleClient;
 
-    private _urls: Urls;
+    private urls: Urls;
 
     get accountId(): string {
-        return this._needleClient.accountId;
+        return this.needleClient.accountId;
     }
 
     get authToken(): string {
-        return this._needleClient.authToken;
+        return this.needleClient.authToken;
     }
 
     constructor({ accountId, authToken, urls }: { accountId: string; authToken: string; urls: Urls }) {
-        this._needleClient = new AuthenticatedNeedleClient({ accountId, authToken });
-        this._urls = urls;
+        this.needleClient = new AuthenticatedNeedleClient({ accountId, authToken });
+        this.urls = urls;
     }
 
     requestExport = (param: ExportRequest): Promise<ExportResult> => {
-        return this._needleClient.post<ExportResult>(this._urls.exportsEndpointURL, param).then((data) => {
+        return this.needleClient.post<ExportResult>(this.urls.exportsEndpointURL, param).then((data) => {
             if (!data) {
                 throw new Error(
                     'Unexpected response received - expected non-empty comparison object, instead got nothing.',
@@ -32,7 +32,7 @@ export default class ExportsEndpoint {
     };
 
     get = (identifier: string): Promise<ExportResult> =>
-        this._needleClient.get<ExportResult>(this._urls.getExportEndpointURL({ identifier })).then((data) => {
+        this.needleClient.get<ExportResult>(this.urls.getExportEndpointURL({ identifier })).then((data) => {
             if (!data) {
                 throw new Error(
                     'Unexpected response received - expected non-empty comparison object, instead got nothing.',
