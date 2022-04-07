@@ -1,12 +1,10 @@
 {
-    "parser": "@babel/eslint-parser",
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint"],
     "rules": {
-        "no-underscore-dangle": "off",
         "import/extensions": "off",
-        "import/no-unresolved": "off"
+        "no-param-reassign": "off"
     },
-    "extends": [
-        "airbnb-base",
-        "plugin:prettier/recommended"
-    ]
+    "parserOptions": {"project": ["tsconfig.json"]},
+    "extends": ["airbnb-base", "airbnb-typescript/base", "plugin:prettier/recommended", "plugin:@typescript-eslint/recommended"]
 }

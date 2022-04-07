@@ -31,11 +31,12 @@ export default function randomString(length: number, charset: string): string {
     while (length > 0) {
         const probablyEnoughBytes = Math.ceil((length * 256) / byteRejectionThreshold + 1 + length / 6);
         const bytes = tryGetBytes(probablyEnoughBytes);
+        // eslint-disable-next-line no-restricted-syntax
         for (const byte of bytes) {
             if (byte < byteRejectionThreshold) {
                 result += charset.charAt(byte % chars);
-                --length;
-                if (length == 0) {
+                length -= 1;
+                if (length === 0) {
                     break;
                 }
             }

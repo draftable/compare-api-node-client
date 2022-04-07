@@ -5,6 +5,7 @@ v1.4.1
 ------
 
 - Add support for exports
+- Updated ESLint configuration and refactored code
 
 v1.4.0
 ------

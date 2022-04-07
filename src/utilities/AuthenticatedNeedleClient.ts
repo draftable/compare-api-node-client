@@ -12,7 +12,7 @@ export default class AuthenticatedNeedleClient {
         this.authToken = authToken;
     }
 
-    private _needle_get(url: string, parameters: Object, callback: NeedleCallback): void {
+    private needleGet(url: string, parameters: unknown, callback: NeedleCallback): void {
         needle.request(
             'get',
             url,
@@ -29,7 +29,7 @@ export default class AuthenticatedNeedleClient {
         );
     }
 
-    private _needle_post(url: string, multipart: boolean, data: Object, callback: NeedleCallback | undefined): void {
+    private needlePost(url: string, multipart: boolean, data: unknown, callback: NeedleCallback | undefined): void {
         needle.request(
             'post',
             url,
@@ -47,7 +47,7 @@ export default class AuthenticatedNeedleClient {
         );
     }
 
-    private _needle_delete(url: string, callback: NeedleCallback | undefined): void {
+    private needleDelete(url: string, callback: NeedleCallback | undefined): void {
         needle.request(
             'delete',
             url,
@@ -64,16 +64,16 @@ export default class AuthenticatedNeedleClient {
         );
     }
 
-    private _needlePromiseCallback({
+    private needlePromiseCallback = ({
         expectedStatusCode,
         resolve,
         reject,
     }: {
         expectedStatusCode: number;
-        resolve: (data: Object) => void;
+        resolve: (data: unknown) => void;
         reject: (error: Error) => void;
-    }) {
-        return (error: Error | null, response: { statusCode?: number; body: Object }) => {
+    }) => {
+        return (error: Error | null, response: { statusCode?: number; body: unknown }) => {
             if (error) {
                 if (error.name === 'DEPTH_ZERO_SELF_SIGNED_CERT') {
                     reject(
@@ -107,33 +107,29 @@ export default class AuthenticatedNeedleClient {
                 resolve(response.body);
             }
         };
-    }
+    };
 
-    get<T extends Object>(url: string, parameters?: Object): Promise<T> {
+    get<T>(url: string, parameters?: unknown): Promise<T> {
         return new Promise<T>((resolve, reject) =>
-            this._needle_get(
-                url,
-                parameters,
-                this._needlePromiseCallback({ expectedStatusCode: 200, resolve, reject }),
-            ),
+            this.needleGet(url, parameters, this.needlePromiseCallback({ expectedStatusCode: 200, resolve, reject })),
         );
     }
 
-    post<T extends Object>(url: string, data: Object, multipart?: boolean): Promise<T> {
+    post<T>(url: string, data: unknown, multipart?: boolean): Promise<T> {
         return new Promise<T>((resolve, reject) =>
-            this._needle_post(
+            this.needlePost(
                 url,
                 multipart || false,
                 data,
-                this._needlePromiseCallback({ expectedStatusCode: 201, resolve, reject }),
+                this.needlePromiseCallback({ expectedStatusCode: 201, resolve, reject }),
             ),
         );
     }
 
     destroy(url: string): Promise<null> {
-        // Needle still returns an object as response.body when there's no content. (It contains an empty buffer.) We just ignore it in favor of returning null.
+        // Needle still returns an unknown as response.body when there's no content. (It contains an empty buffer.) We just ignore it in favor of returning null.
         return new Promise((resolve, reject) =>
-            this._needle_delete(url, this._needlePromiseCallback({ expectedStatusCode: 204, resolve, reject })),
-        ).then((data) => null);
+            this.needleDelete(url, this.needlePromiseCallback({ expectedStatusCode: 204, resolve, reject })),
+        ).then(() => null);
     }
 }

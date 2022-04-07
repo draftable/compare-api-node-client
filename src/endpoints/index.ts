@@ -1,3 +1,3 @@
 import ComparisonsEndpoint from './comparisons/ComparisonsEndpoint';
 
-export { ComparisonsEndpoint };
+export default ComparisonsEndpoint;

@@ -1,31 +1,31 @@
 import { generateIdentifier as _generateIdentifier } from './utilities';
 import Urls from '../urls';
-import { ComparisonsResult, Side, Stream } from './types';
+import { ComparisonData, ComparisonsResult, Side, Stream } from './types';
 import AuthenticatedNeedleClient from '../../utilities/AuthenticatedNeedleClient';
 import Comparison from './Comparison';
-import { allowedFileTypes } from './consts';
+import allowedFileTypes from './consts';
 import { DateParameter } from '../types';
 
 export default class ComparisonsEndpoint {
-    private _needleClient: AuthenticatedNeedleClient;
+    private needleClient: AuthenticatedNeedleClient;
 
-    private _urls: Urls;
+    private urls: Urls;
 
     get accountId(): string {
-        return this._needleClient.accountId;
+        return this.needleClient.accountId;
     }
 
     get authToken(): string {
-        return this._needleClient.authToken;
+        return this.needleClient.authToken;
     }
 
     constructor({ accountId, authToken, urls }: { accountId: string; authToken: string; urls: Urls }) {
-        this._needleClient = new AuthenticatedNeedleClient({ accountId, authToken });
-        this._urls = urls;
+        this.needleClient = new AuthenticatedNeedleClient({ accountId, authToken });
+        this.urls = urls;
     }
 
     getAll = (): Promise<Comparison[]> =>
-        this._needleClient.get<ComparisonsResult>(this._urls.comparisonsEndpointURL).then((data) => {
+        this.needleClient.get<ComparisonsResult>(this.urls.comparisonsEndpointURL).then((data) => {
             if (!data || !data.results) {
                 throw new Error(
                     `Unexpected response received - expected object with non-null results array, instead got: ${JSON.stringify(
@@ -33,18 +33,20 @@ export default class ComparisonsEndpoint {
                     )}`,
                 );
             }
-            return data.results.map((data): Comparison => new Comparison(data));
+            return data.results.map((result): Comparison => new Comparison(result));
         });
 
     get = (identifier: string): Promise<Comparison> =>
-        this._needleClient.get(this._urls.getComparisonEndpointURL({ identifier })).then((data: any) => {
-            if (!data) {
-                throw new Error(
-                    'Unexpected response received - expected non-empty comparison object, instead got nothing.',
-                );
-            }
-            return new Comparison(data);
-        });
+        this.needleClient
+            .get(this.urls.getComparisonEndpointURL({ identifier }))
+            .then((comparisonData: ComparisonData) => {
+                if (!comparisonData) {
+                    throw new Error(
+                        'Unexpected response received - expected non-empty comparison object, instead got nothing.',
+                    );
+                }
+                return new Comparison(comparisonData);
+            });
 
     create = ({
         left,
@@ -94,9 +96,9 @@ export default class ComparisonsEndpoint {
                 sideData.display_name = data.displayName;
             }
             sideData.source_url = data.source;
-            const return_val = {};
-            return_val[side] = sideData;
-            return return_val;
+            const result = {};
+            result[side] = sideData;
+            return result;
         }
 
         try {
@@ -116,15 +118,15 @@ export default class ComparisonsEndpoint {
                 public: publiclyAccessible,
                 expiry_time: expires,
             };
-            return this._needleClient
-                .post(this._urls.comparisonsEndpointURL, data, multipartRequired)
-                .then((data: any) => {
-                    if (!data) {
+            return this.needleClient
+                .post(this.urls.comparisonsEndpointURL, data, multipartRequired)
+                .then((comparisonData: ComparisonData) => {
+                    if (!comparisonData) {
                         throw new Error(
                             'Unexpected response received - expected non-empty comparison object, instead got nothing.',
                         );
                     }
-                    return new Comparison(data);
+                    return new Comparison(comparisonData);
                 });
         } catch (error) {
             return Promise.reject(error);
@@ -132,15 +134,15 @@ export default class ComparisonsEndpoint {
     };
 
     destroy = (identifier: string): Promise<null> =>
-        this._needleClient.destroy(this._urls.getComparisonEndpointURL({ identifier }));
+        this.needleClient.destroy(this.urls.getComparisonEndpointURL({ identifier }));
 
     generateIdentifier = (): string => _generateIdentifier();
 
     publicViewerURL = (identifier: string, wait?: boolean): string =>
-        this._urls.getViewerURL(this.accountId, null, identifier, null, wait || false);
+        this.urls.getViewerURL(this.accountId, null, identifier, null, wait || false);
 
     signedViewerURL = (identifier: string, valid_until?: DateParameter, wait?: boolean): string =>
-        this._urls.getViewerURL(
+        this.urls.getViewerURL(
             this.accountId,
             this.authToken,
             identifier,

@@ -8,3 +8,5 @@ export const allowedFileTypes = {
     pptm: 'pptm',
     ppt: 'ppt',
 };
+
+export default allowedFileTypes;
