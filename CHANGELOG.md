@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v1.4.2
+------
+
+- Adjust the library to accept txt files
+
 v1.4.1
 ------
 
