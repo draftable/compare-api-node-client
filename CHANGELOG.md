@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v1.4.3
+------
+
+- Security update
+
 v1.4.2
 ------
 
