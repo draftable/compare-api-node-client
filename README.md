@@ -9,8 +9,6 @@ Draftable Compare API - Node.js Client Library
 
 [![travis](https://api.travis-ci.com/draftable/compare-api-node-client.svg?branch=stable)](https://app.travis-ci.com/github/draftable/compare-api-node-client)
 
-[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/draftable/compare-api-node-client)
-
 A thin JavaScript client for the [Draftable API](https://draftable.com/rest-api) which wraps all available endpoints and handles authentication and signing.
 
 See the [full API documentation](https://api.draftable.com) for an introduction to the API, usage notes, and other reference material.
@@ -28,6 +26,7 @@ See the [full API documentation](https://api.draftable.com) for an introduction 
 - [Other information](#other-information)
   - [Browser support](#browser-support)
   - [Self-signed certificates](#self-signed-certificates)
+- [License](#license)
 
 Requirements
 ------------
@@ -375,3 +374,8 @@ SET NODE_TLS_REJECT_UNAUTHORIZED=0
 ```
 
 Setting this environment variable in production environments is strongly discouraged as it significantly lowers security. We only recommend setting this environment variable in development environments if configuring a CA signed certificate for API Self-hosted is not possible.
+
+License
+-------
+
+All content is licensed under the terms of [The MIT License](LICENSE).
