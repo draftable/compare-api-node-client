@@ -3,7 +3,7 @@ import Urls from '../urls';
 import { ComparisonData, ComparisonsResult, Side, Stream } from './types';
 import AuthenticatedNeedleClient from '../../utilities/AuthenticatedNeedleClient';
 import Comparison from './Comparison';
-import allowedFileTypes from './consts';
+import AllowedFileTypes from './consts';
 import { DateParameter } from '../types';
 
 export default class ComparisonsEndpoint {
@@ -67,10 +67,10 @@ export default class ComparisonsEndpoint {
             if (data.fileType == null || typeof data.fileType !== 'string') {
                 throw new Error('Invalid file type given - file type must be a string.');
             }
-            if (allowedFileTypes[data.fileType.toLowerCase()] == null) {
+            if (AllowedFileTypes[data.fileType.toLowerCase()] == null) {
                 throw new Error(
                     `Invalid file type "${data.fileType.toLowerCase()}" given. Expected one of ("${Object.keys(
-                        allowedFileTypes,
+                        AllowedFileTypes,
                     ).join('", "')}").`,
                 );
             }
