@@ -1,4 +1,4 @@
-import { allowedFileTypes } from './consts';
+import ALLOWED_FILE_TYPES from './constants';
 
 export type ComparisonsResult = {
     count: number;
@@ -47,7 +47,7 @@ export type ComparisonSide = {
     file?: string | null;
 };
 
-export type FileType = keyof typeof allowedFileTypes;
+export type FileType = keyof typeof ALLOWED_FILE_TYPES;
 
 export type Stream = { pipe: unknown };
 
