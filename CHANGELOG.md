@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v1.4.4
+------
+
+- Update models to match API model
+- Make Client class type public
+
 v1.4.3
 ------
 
