@@ -1,4 +1,4 @@
-import { allowedFileTypes } from './consts';
+import ALLOWED_FILE_TYPES from './constants';
 
 export type ComparisonsResult = {
     count: number;
@@ -15,10 +15,16 @@ export type SideData = {
     file_type: FileType;
     source_url?: string | null;
     display_name?: string | null;
+    page_count?: number | null;
+    original_document_size_bytes?: number | null;
+    highlighted_document_size_bytes?: number | null;
+    file?: string | null;
 };
 
 export type ComparisonData = {
     identifier: string;
+    url: string;
+    viewer_url: string;
     left: SideData;
     right: SideData;
     creation_time: string;
@@ -26,6 +32,7 @@ export type ComparisonData = {
     public?: boolean | null;
     expiry_time?: string;
     ready: boolean;
+    ready_time?: string;
     failed?: boolean | null;
     error_message?: string | null;
 };
@@ -34,9 +41,13 @@ export type ComparisonSide = {
     fileType: FileType;
     sourceURL?: string | null;
     displayName?: string | null;
+    pageCount?: number | null;
+    originalDocumentSizeBytes?: number | null;
+    highlightedDocumentSizeBytes?: number | null;
+    file?: string | null;
 };
 
-export type FileType = keyof typeof allowedFileTypes;
+export type FileType = keyof typeof ALLOWED_FILE_TYPES;
 
 export type Stream = { pipe: unknown };
 

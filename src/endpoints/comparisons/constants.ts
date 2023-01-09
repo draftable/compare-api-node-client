@@ -1,4 +1,4 @@
-export const allowedFileTypes = {
+const ALLOWED_FILE_TYPES = {
     pdf: 'pdf',
     docx: 'docx',
     docm: 'docm',
@@ -10,4 +10,4 @@ export const allowedFileTypes = {
     txt: 'txt',
 };
 
-export default allowedFileTypes;
+export default ALLOWED_FILE_TYPES;
