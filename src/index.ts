@@ -43,5 +43,5 @@ export function client(accountId: string, authToken: string, baseUrl?: string): 
     return new Client({ accountId, authToken, baseUrl });
 }
 
-export type { ComparisonsEndpoint, Comparison, ComparisonSide, FileType };
+export type { ComparisonsEndpoint, Comparison, ComparisonSide, FileType, Client };
 export type { ExportsEndpoint, ExportResult, ExportKind };
