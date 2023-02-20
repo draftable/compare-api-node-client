@@ -5,6 +5,12 @@
         "import/extensions": "off",
         "no-param-reassign": "off"
     },
-    "parserOptions": {"project": ["tsconfig.json"]},
-    "extends": ["airbnb-base", "airbnb-typescript/base", "plugin:prettier/recommended", "plugin:@typescript-eslint/recommended"]
+    "parserOptions": { "project": ["tsconfig.json"] },
+    "extends": [
+        "airbnb-base",
+        "airbnb-typescript/base",
+        "plugin:prettier/recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "ignorePatterns": ["dist"]
 }
