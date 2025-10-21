@@ -19,7 +19,7 @@ describe('Compare Api Node Client live tests', function () {
 
     before(function () {
         // From https://api.draftable.com/account/credentials under "Account ID"
-        this.client = require('..').client('<Account ID>', '<Auth Token>');
+        this.client = require('..').client(process.env.DRAFTABLE_ACCOUNT_ID, process.env.DRAFTABLE_AUTH_TOKEN);
         this.comparisons = this.client.comparisons;
         this.identifiers = Array.from({ length: 3 }, () => this.comparisons.generateIdentifier());
     });
