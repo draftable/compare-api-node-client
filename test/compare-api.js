@@ -18,8 +18,8 @@ describe('Compare Api Node Client live tests', function () {
     this.timeout(10000);
 
     before(function () {
-        // These credentials are for the Draftable Comparison API Test Account and can be public.
-        this.client = require('..').client('GOiDaN-test', 'fe055b5a54c4d58264f70050a469536e');
+        // From https://api.draftable.com/account/credentials under "Account ID"
+        this.client = require('..').client('<Account ID>', '<Auth Token>');
         this.comparisons = this.client.comparisons;
         this.identifiers = Array.from({ length: 3 }, () => this.comparisons.generateIdentifier());
     });
