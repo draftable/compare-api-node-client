@@ -10,9 +10,11 @@ arch: amd64
 cache: npm
 
 node_js:
-  - 12
-  - 14
   - 16
+  - 18
+  - 20
+  - 22
+  - 24
 
 notifications:
   email: false
